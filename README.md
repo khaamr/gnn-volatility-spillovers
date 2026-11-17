@@ -40,7 +40,3 @@ python -m unittest discover -s tests -v
 open a notebook with this kernel and run all cells from that folder. the first run caches approximately 0.5 gb of public data. the spectral notebook uses pytorch on cpu and also exports its fold audit, paired comparisons and solver diagnostics.
 
 ## research attribution
-
-the research commit credits [v-ostrovskaya](https://github.com/v-ostrovskaya). the architecture commit credits [oolgamakogonova-debug](https://github.com/oolgamakogonova-debug). commit attribution does not assert that either collaborator reviewed the proofs.
-
-the earlier volatility-only study remains in [gnnhar replication](GNNHAR_Replication.ipynb) and [its notes](docs/README.md). the covariance notebooks above concern the article specified for this replication.
