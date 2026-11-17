@@ -1,6 +1,6 @@
 # forecasting realized covariances
 
-a replication of zhang, pu, cucuringu and dong's graph-based har paper. the target is a full covariance matrix, including the co-movement of every pair of stocks.
+a replication of the graph-based har covariance study. the target is a full covariance matrix, including the co-movement of every pair of stocks.
 
 [executed notebook](Covariance_Replication.ipynb) · [protocol audit](docs/protocol-audit.md) · [journal article](https://doi.org/10.1093/jjfinec/nbae026) · [authors' code](https://github.com/chaozhang-ox/Graph-based-HAR/tree/751f8f0b400a33e2f2fd01501ffdc42a2315f013)
 

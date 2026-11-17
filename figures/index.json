@@ -1,0 +1,92 @@
+[
+  {
+    "id": "replication-01",
+    "group": "replication",
+    "title": "GLASSO + line graph \u00b7 loss relative to HAR-DRD",
+    "file": "figures/replication-01.json",
+    "notebook": "covariance_replication/Covariance_Replication.ipynb",
+    "notebook_sha256": "297a824e2e9c0ed53f3258d53a556de8d355305b150d8339dd36c5951f2ccd9c",
+    "cell_index": 9,
+    "output_index": 2
+  },
+  {
+    "id": "replication-02",
+    "group": "replication",
+    "title": "One-session portfolios \u00b7 realized risk and turnover",
+    "file": "figures/replication-02.json",
+    "notebook": "covariance_replication/Covariance_Replication.ipynb",
+    "notebook_sha256": "297a824e2e9c0ed53f3258d53a556de8d355305b150d8339dd36c5951f2ccd9c",
+    "cell_index": 12,
+    "output_index": 7
+  },
+  {
+    "id": "replication-03",
+    "group": "replication",
+    "title": "2022-09-21 \u00b7 GHAR(GL,L) covariance forecast minus realized",
+    "file": "figures/replication-03.json",
+    "notebook": "covariance_replication/Covariance_Replication.ipynb",
+    "notebook_sha256": "297a824e2e9c0ed53f3258d53a556de8d355305b150d8339dd36c5951f2ccd9c",
+    "cell_index": 14,
+    "output_index": 6
+  },
+  {
+    "id": "shape-extension-01",
+    "group": "shape extension",
+    "title": "27-stock line graph \u00b7 centered-feature contraction bound",
+    "file": "figures/shape-extension-01.json",
+    "notebook": "covariance_replication/Extended_Covariance.ipynb",
+    "notebook_sha256": "6a260a293a62774b34ad29a0762428cfcbbbf78c240a88ba9f687af4ab1aa2ee",
+    "cell_index": 5,
+    "output_index": 1
+  },
+  {
+    "id": "shape-extension-02",
+    "group": "shape extension",
+    "title": "One-session mixture \u00b7 weights before each realized outcome",
+    "file": "figures/shape-extension-02.json",
+    "notebook": "covariance_replication/Extended_Covariance.ipynb",
+    "notebook_sha256": "6a260a293a62774b34ad29a0762428cfcbbbf78c240a88ba9f687af4ab1aa2ee",
+    "cell_index": 12,
+    "output_index": 4
+  },
+  {
+    "id": "shape-extension-03",
+    "group": "shape extension",
+    "title": "confirmation period \u00b7 one-session covariance loss ratios",
+    "file": "figures/shape-extension-03.json",
+    "notebook": "covariance_replication/Extended_Covariance.ipynb",
+    "notebook_sha256": "6a260a293a62774b34ad29a0762428cfcbbbf78c240a88ba9f687af4ab1aa2ee",
+    "cell_index": 14,
+    "output_index": 1
+  },
+  {
+    "id": "spectral-extension-01",
+    "group": "spectral extension",
+    "title": "geometric spectral gate \u00b7 weights before each outcome",
+    "file": "figures/spectral-extension-01.json",
+    "notebook": "covariance_replication/Spectral_Covariance.ipynb",
+    "notebook_sha256": "09dcb57fafdce936699f3c23b584f4fb326bd1f1add99a1dc9ce65653e6f925f",
+    "cell_index": 12,
+    "output_index": 0
+  },
+  {
+    "id": "spectral-extension-02",
+    "group": "spectral extension",
+    "title": "reused benchmark \u00b7 covariance forecast losses",
+    "file": "figures/spectral-extension-02.json",
+    "notebook": "covariance_replication/Spectral_Covariance.ipynb",
+    "notebook_sha256": "09dcb57fafdce936699f3c23b584f4fb326bd1f1add99a1dc9ce65653e6f925f",
+    "cell_index": 12,
+    "output_index": 1
+  },
+  {
+    "id": "spectral-extension-03",
+    "group": "spectral extension",
+    "title": "reused benchmark \u00b7 long-only annualized gross risk",
+    "file": "figures/spectral-extension-03.json",
+    "notebook": "covariance_replication/Spectral_Covariance.ipynb",
+    "notebook_sha256": "09dcb57fafdce936699f3c23b584f4fb326bd1f1add99a1dc9ce65653e6f925f",
+    "cell_index": 12,
+    "output_index": 2
+  }
+]
