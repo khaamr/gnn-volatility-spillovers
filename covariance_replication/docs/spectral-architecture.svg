@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-labelledby="title"><title id="title">Geometric covariance pooling with spectral cleaning</title>
+<defs><marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L11 6L0 12z" fill="#76948e"/></marker></defs>
+<g font-family="Helvetica, Arial, sans-serif">
+<rect x="0" y="0" width="1200" height="1200" rx="0" fill="#f4f7f5" stroke="none" stroke-width="1.5"/>
+<rect x="0" y="0" width="1200" height="158" rx="0" fill="#142e34" stroke="none" stroke-width="1.5"/>
+<text x="48" y="42" fill="#9ce0c7" font-size="18" font-weight="700" text-anchor="start">accuracy + portfolio risk</text>
+<text x="46" y="96" fill="#fff" font-size="45" font-weight="700" text-anchor="start">geometric pooling with spectral cleaning</text>
+<text x="48" y="133" fill="#c3d9d8" font-size="21" font-weight="400" text-anchor="start">175 parameters · five covariance experts · daily inputs · causal quarterly gate refits</text>
+<rect x="48" y="184" width="1104" height="94" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<text x="72" y="220" fill="#183239" font-size="26" font-weight="700" text-anchor="start">five positive-definite covariance experts</text>
+<text x="72" y="251" fill="#526970" font-size="21" font-weight="400" text-anchor="start">har-drd · graph har · har-cholesky · arithmetic har · log-euclidean har</text>
+<path d="M600 279V304H313V325" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M600 304H887V325" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="48" y="328" width="527" height="130" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<text x="72" y="363" fill="#183239" font-size="24" font-weight="700" text-anchor="start">past regime features → nonlinear gate</text>
+<text x="72" y="395" fill="#526970" font-size="20" font-weight="400" text-anchor="start">trace changes, conditioning and correlation</text>
+<text x="72" y="425" fill="#526970" font-size="19" font-weight="400" text-anchor="start">learn expert weights + a positive variance scale</text>
+<rect x="623" y="328" width="529" height="130" rx="14" fill="#efedf8" stroke="#ded9ec" stroke-width="1.5"/>
+<text x="647" y="363" fill="#183239" font-size="25" font-weight="700" text-anchor="start">keep a simpler static control</text>
+<text x="647" y="395" fill="#526970" font-size="19" font-weight="400" text-anchor="start">constant weights + scalar eigenvalue shrinkage</text>
+<text x="647" y="425" fill="#526970" font-size="19" font-weight="400" text-anchor="start">7 parameters; same history and training targets</text>
+<path d="M312 458V483H600V502" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M887 458V483H600" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="48" y="505" width="1104" height="86" rx="14" fill="#e3f2eb" stroke="#c9e4d7" stroke-width="1.5"/>
+<text x="72" y="540" fill="#183239" font-size="27" font-weight="700" text-anchor="start">convex covariance pool → learned eigenvalue cleaning</text>
+<text x="72" y="572" fill="#526970" font-size="21" font-weight="400" text-anchor="start">preserve positive eigenvalues; shrink the noisy spectrum; retain its total variance</text>
+<path d="M600 591V621" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="48" y="624" width="1104" height="90" rx="14" fill="#142e34" stroke="#142e34" stroke-width="1.5"/>
+<text x="72" y="660" fill="#fff" font-size="26" font-weight="700" text-anchor="start">condition-number guard ≤ 100 → positive-definite forecast</text>
+<text x="72" y="692" fill="#d0e5e1" font-size="20" font-weight="400" text-anchor="start">guaranteed bounded conditioning; forecast accuracy and realized risk require a test</text>
+<path d="M600 714V741H312V761" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M600 741H887V761" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="48" y="764" width="527" height="116" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<text x="72" y="800" fill="#183239" font-size="25" font-weight="700" text-anchor="start">50% forecast-accuracy objective</text>
+<text x="72" y="831" fill="#526970" font-size="20" font-weight="400" text-anchor="start">historically normalized frobenius distance</text>
+<text x="72" y="859" fill="#526970" font-size="19" font-weight="400" text-anchor="start">evaluate euclidean, frobenius and qlike losses</text>
+<rect x="623" y="764" width="529" height="116" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<text x="647" y="800" fill="#183239" font-size="25" font-weight="700" text-anchor="start">50% portfolio-risk objective</text>
+<text x="647" y="831" fill="#526970" font-size="19" font-weight="400" text-anchor="start">historically normalized squared portfolio return</text>
+<text x="647" y="859" fill="#526970" font-size="20" font-weight="400" text-anchor="start">exact long-only optimization for evaluation</text>
+<path d="M312 880V909H600V929" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M887 880V909H600" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="48" y="932" width="1104" height="126" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<text x="72" y="968" fill="#183239" font-size="26" font-weight="700" text-anchor="start">historical validation + paired two-endpoint assessment</text>
+<text x="72" y="1000" fill="#526970" font-size="20" font-weight="400" text-anchor="start">378+ earlier labels · 126-label inner validation · report the static and previous controls</text>
+<text x="72" y="1030" fill="#526970" font-size="20" font-weight="400" text-anchor="start">accept only if both primary paired intervals favor the candidate over har-drd</text>
+<text x="48" y="1103" fill="#0f7166" font-size="21" font-weight="700" text-anchor="start">reused 2025–2026 benchmark</text>
+<text x="48" y="1137" fill="#183239" font-size="25" font-weight="700" text-anchor="start">frobenius error −1.79% · long-only annual risk 9.435% → 9.406%</text>
+<text x="48" y="1171" fill="#526970" font-size="20" font-weight="400" text-anchor="start">risk interval includes zero: the predefined joint improvement criterion is not passed</text>
+</g></svg>
