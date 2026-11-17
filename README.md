@@ -4,7 +4,7 @@
 
 **realized covariance replication · graph spillovers · geometric spectral learning**
 
-[replication](covariance_replication/Covariance_Replication.ipynb) · [shape extension](covariance_replication/Extended_Covariance.ipynb) · [spectral extension](covariance_replication/Spectral_Covariance.ipynb) · [interactive figures](research_dashboard.html) · [proofs](covariance_replication/docs/theory.md)
+[website files](index.html) · [replication](covariance_replication/Covariance_Replication.ipynb) · [shape extension](covariance_replication/Extended_Covariance.ipynb) · [spectral extension](covariance_replication/Spectral_Covariance.ipynb) · [interactive figures](research_dashboard.html) · [proofs](covariance_replication/docs/theory.md)
 
 **27 stocks &nbsp; / &nbsp; 13 reference specifications &nbsp; / &nbsp; 3 horizons &nbsp; / &nbsp; 9 interactive figures**
 
@@ -22,12 +22,19 @@ based on **_graph-based methods for forecasting realized covariances_** by Zhang
 
 | start here | what you will find |
 | --- | --- |
+| [supplied website](index.html) | the project single-page site; download the folder and open index.html locally |
 | [covariance replication](covariance_replication/Covariance_Replication.ipynb) | har-cholesky, har-drd and graph specifications at 1, 5 and 22 retained sessions |
 | [adaptive shape extension](covariance_replication/Extended_Covariance.ipynb) | delayed-feedback expert mixing, unit-trace covariance shapes and portfolio checks |
 | [geometric spectral extension](covariance_replication/Spectral_Covariance.ipynb) | regime-dependent pooling, learned eigenvalue cleaning and equal accuracy/risk objectives |
 | [offline interactive gallery](research_dashboard.html) | all nine saved plotly figures; download and open the html for interactivity |
 | [mathematical proofs](covariance_replication/docs/theory.md) | graph contraction, a loss–risk counterexample, conditional risk and regret bounds |
 | [protocol audit](covariance_replication/docs/protocol-audit.md) | the original method, implementation choices, calendar differences and limitations |
+
+## website
+
+[open the site source](index.html) · [download the project](https://github.com/khaamr/gnn-volatility-spillovers/archive/refs/heads/main.zip)
+
+the supplied site includes the pipeline, results, uncertainty tables and theory overview. after downloading the project, open index.html in a browser. GitHub Pages remains disabled, so this is a link to the committed site files rather than a live hosted address.
 
 ## from prices to portfolio outcomes
 

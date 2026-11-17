@@ -12,87 +12,103 @@ The extension is grounded in five formal results that connect graph spectral the
 
 ### Lemma 1 — Line-Graph Aggregation and Spectral Contraction
 
-Let $B \in \{0,1\}^{n \times m}$ be the endpoint incidence matrix for $n$ stocks and $m = n(n-1)/2$ pairs. The normalized line-graph adjacency is
+Let $`n \ge 4`$ and $`B \in \{0,1\}^{n \times m}`$ be the endpoint incidence matrix for $`n`$ stocks and $`m = n(n-1)/2`$ pairs. The normalized line-graph adjacency is
 
-$$W_L = \frac{B^\top B - 2I_m}{2(n-2)},$$
+```math
+W_L = \frac{B^\top B - 2I_m}{2(n-2)},
+```
 
 with eigenvalues (and multiplicities)
 
-$$1\;(1),\quad \frac{n-4}{2(n-2)}\;(n-1),\quad -\frac{1}{n-2}\;\left(\tfrac{n(n-3)}{2}\right).$$
+```math
+1\;(1),\quad \frac{n-4}{2(n-2)}\;(n-1),\quad -\frac{1}{n-2}\;\left(\tfrac{n(n-3)}{2}\right).
+```
 
-For any pair-feature matrix $X \in \mathbb{R}^{m \times d}$ and the row-mean projector $J_m = \mathbf{1}\mathbf{1}^\top / m$,
+For any pair-feature matrix $`X \in \mathbb{R}^{m \times d}`$ and the row-mean projector $`J_m = \mathbf{1}\mathbf{1}^\top / m`$,
 
-$$\|W_L^k X - J_m X\|_F \le \rho_n^k \|X - J_m X\|_F, \quad \rho_n = \max\!\left\{\frac{|n-4|}{2(n-2)},\; \frac{1}{n-2}\right\} < 1.$$
+```math
+\|W_L^k X - J_m X\|_F \le \rho_n^k \|X - J_m X\|_F, \quad \rho_n = \max\!\left\{\frac{|n-4|}{2(n-2)},\; \frac{1}{n-2}\right\} < 1.
+```
 
 | parameter | value for this study |
 | --- | --- |
-| stocks $n$ | 27 |
-| pairs $m$ | 351 |
-| contraction rate $\rho_{27}$ | **0.46** per pass |
+| stocks $`n`$ | 27 |
+| pairs $`m`$ | 351 |
+| contraction rate $`\rho_{27}`$ | **0.46** per pass |
 | effective pair neighbors | 50 out of 350 |
 
-**Practical significance.** Each graph convolution contracts centered pair features toward their cross-sectional mean at rate 0.46. After $k$ passes the centered component shrinks by $0.46^k$; e.g. three passes reduce it by **90.3%**. The identity $(W_L X)_{(i,j)} = \sum_{k \ne i,j}[X_{(i,k)} + X_{(j,k)}] / [2(n-2)]$ shows that aggregation averages the other-partner correlations of each endpoint, providing a principled smoothing mechanism for pair-specific noise. The factorization $B^\top(BX)$ avoids materializing the $351 \times 351$ adjacency and runs in $O(n^2 d)$.
+**Practical significance.** Repeated application of the fixed linear line-graph operator contracts centered pair features by at most $`0.46^k`$ after $`k`$ passes. Three passes therefore leave at most **9.73%** of the initial centered norm. This is an operator bound, rather than an observed reduction or an optimal-depth claim for a nonlinear graph network. The identity $`(W_L X)_{(i,j)} = \sum_{k \ne i,j}[X_{(i,k)} + X_{(j,k)}] / [2(n-2)]`$ shows that aggregation averages the other-partner correlations of each endpoint, providing a principled smoothing mechanism for pair-specific noise. The factorization $`B^\top(BX)`$ avoids materializing the $`351 \times 351`$ adjacency and runs in $`O(n^2 d)`$.
 
 ### Proposition 2 — Loss–Risk Counterexample
 
-There exist positive-definite forecasts $A$ and $C$ and a true conditional covariance $H$ such that $C$ has strictly smaller Euclidean, Frobenius **and** QLIKE loss relative to $H$, yet the GMVP constructed from $C$ has **higher** true portfolio variance than the GMVP from $A$.
+There exist positive-definite forecasts $`A`$ and $`C`$ and a true conditional covariance $`H`$ such that $`C`$ has strictly smaller Euclidean, Frobenius **and** QLIKE loss relative to $`H`$, yet the GMVP constructed from $`C`$ has **higher** true portfolio variance than the GMVP from $`A`$.
 
-| quantity | forecast $A = 2H$ | forecast $C$ | interpretation |
+| quantity | forecast $`A = 2H`$ | forecast $`C`$ | interpretation |
 | --- | --- | --- | --- |
-| $H$ | $\text{diag}(1,4)$ | $\text{diag}(1,4)$ | true covariance |
-| Euclidean / Frobenius | $\sqrt{17} \approx 4.123$ | **1.000** | $C$ wins all three losses |
-| excess QLIKE | 0.3863 | **0.0457** | $C$ wins QLIKE |
-| GMVP weights | $(4/5,\; 1/5)$ | $(3/4,\; 1/4)$ | different allocations |
-| true GMVP variance | **0.800** | 0.8125 | but $A$'s portfolio is safer |
+| $`H`$ | $`\text{diag}(1,4)`$ | $`\text{diag}(1,4)`$ | true covariance |
+| Euclidean / Frobenius | $`\sqrt{17} \approx 4.123`$ | **1.000** | $`C`$ wins all three losses |
+| excess QLIKE | 0.3863 | **0.0457** | $`C`$ wins QLIKE |
+| GMVP weights | $`(4/5,\; 1/5)`$ | $`(3/4,\; 1/4)`$ | different allocations |
+| true GMVP variance | **0.800** | 0.8125 | but $`A`$'s portfolio is safer |
 
-**Why this happens.** GMVP weights are invariant to positive scaling of the covariance ($w_{cH} = w_H$ for all $c > 0$), yet absolute matrix-distance losses still penalize the scalar offset. This non-monotone relationship between estimation accuracy and portfolio risk persists across all three standard loss functions and both unconstrained and long-only constraints. It is therefore **insufficient** to infer allocation improvement from matrix-loss improvement alone — a separate portfolio evaluation is mandatory.
+**Why this happens.** GMVP weights are invariant to positive scaling of the covariance ($`w_{cH} = w_H`$ for all $`c > 0`$), yet absolute matrix-distance losses still penalize the scalar offset. This non-monotone relationship between estimation accuracy and portfolio risk persists across all three standard loss functions and both unconstrained and long-only constraints. It is therefore **insufficient** to infer allocation improvement from matrix-loss improvement alone — a separate portfolio evaluation is mandatory.
 
 ### Lemma 3 — Conditional Portfolio-Risk Bound via Relative Spectral Error
 
-If a forecast $S \succ 0$ satisfies the relative spectral sandwich
+If a forecast $`S \succ 0`$ satisfies the relative spectral sandwich
 
-$$(1 - \delta) H \preceq S \preceq (1 + \delta) H, \quad 0 \le \delta < 1,$$
+```math
+(1 - \delta) H \preceq S \preceq (1 + \delta) H, \quad 0 \le \delta < 1,
+```
 
 then for any GMVP (unrestricted or long-only) under matching constraints,
 
-$$w_S^\top H w_S \;\le\; \frac{1 + \delta}{1 - \delta}\, w_H^\top H w_H.$$
+```math
+w_S^\top H w_S \;\le\; \frac{1 + \delta}{1 - \delta}\, w_H^\top H w_H.
+```
 
-| relative error $\delta$ | risk inflation factor | excess risk bound |
+| relative error $`\delta`$ | risk inflation factor | excess risk bound |
 | ---: | ---: | ---: |
 | 0.01 | 1.0202 | +2.02% |
 | 0.05 | 1.1053 | +10.53% |
 | 0.10 | 1.2222 | +22.22% |
 | 0.20 | 1.5000 | +50.00% |
 
-**Practical scope.** This bound requires a **relative** (multiplicative) spectral approximation, not merely low average absolute error. It bridges the gap identified in Proposition 2 by providing an explicit condition under which estimation quality does translate to portfolio quality. The public forecasts do not satisfy verified instances of this condition for the latent conditional covariance.
+**Practical scope.** This bound requires a **relative** (multiplicative) spectral approximation, not merely low average absolute error. It bridges the gap identified in Proposition 2 by providing an explicit condition under which estimation quality does translate to portfolio quality. This relative condition has not been verified for the latent conditional covariance in the public experiment.
 
 ### Lemma 4 — Bounded Shape Loss and Positive Mixtures
 
-For trace-one positive-semidefinite shapes $C$ and $C^*$,
+For trace-one positive-semidefinite shapes $`C`$ and $`C^*`$,
 
-$$\ell(C, C^*) = \tfrac{1}{2}\|C - C^*\|_F^2 \in [0,\, 1].$$
+```math
+\ell(C, C^*) = \tfrac{1}{2}\|C - C^*\|_F^2 \in [0,\, 1].
+```
 
-Convex mixtures $C_p = \sum_j p_j C_j$ satisfy the **convexity inequality**
+Convex mixtures $`C_p = \sum_j p_j C_j`$ satisfy the **convexity inequality**
 
-$$\ell(C_p, C^*) \le \sum_j p_j \,\ell(C_j, C^*),$$
+```math
+\ell(C_p, C^*) \le \sum_j p_j \,\ell(C_j, C^*),
+```
 
-and if each expert $C_j \succ 0$, then $\hat{S} = \tau \cdot C_p$ is positive definite with trace $\tau$ for any $\tau > 0$. This ensures that the adaptive mixture preserves the covariance structure needed for downstream optimization.
+and if each expert $`C_j \succ 0`$, then $`\hat{S} = \tau \cdot C_p`$ is positive definite with trace $`\tau`$ for any $`\tau > 0`$. This ensures that the adaptive mixture preserves the covariance structure needed for downstream optimization.
 
 ### Theorem 5 — Delayed-Feedback Regret Bound
 
-Fix $K$ experts, learning rate $\eta > 0$, and an arbitrary sequence of trace-one realized shapes. If $d_t$ unresolved labels are outstanding at origin $t$, the cumulative adaptive mixture incurs
+Fix $`K`$ experts, learning rate $`\eta > 0`$, and an arbitrary sequence of trace-one realized shapes. If $`d_t`$ unresolved labels are outstanding at origin $`t`$, the cumulative adaptive mixture incurs
 
-$$\sum_{t=1}^T \ell(C_{p_t}, C_t^*) - \min_j \sum_{t=1}^T \ell_{t,j} \;\le\; \frac{\log K}{\eta} + \frac{\eta T}{8} + \frac{\eta}{4}\sum_{t=1}^T d_t.$$
+```math
+\sum_{t=1}^T \ell(C_{p_t}, C_t^*) - \min_j \sum_{t=1}^T \ell_{t,j} \;\le\; \frac{\log K}{\eta} + \frac{\eta T}{8} + \frac{\eta}{4}\sum_{t=1}^T d_t.
+```
 
-| horizon $h$ | feedback | bound form | value at $K = 3$, $\eta = 0.5$ |
+| horizon $`h`$ | feedback | bound form | value at $`K = 3`$, $`\eta = 0.5`$ |
 | ---: | --- | --- | ---: |
-| 1 session | immediate | $\log K / \eta$ (tighter, via concavity) | **2.197** |
+| 1 session | immediate | $`\log K / \eta`$ (tighter, via concavity) | **2.197** |
 | 5 sessions | delayed up to 4 | general with delay term | 598.3 |
 | 22 sessions | delayed up to 21 | general with delay term | 2,781.8 |
 
-**Corollary (one-session).** When feedback is immediate and $\eta \le 1/2$, the loss exponential is concave on the trace-one domain. Jensen's inequality replaces the bounded-moment bound, eliminating the $\eta T / 8$ term. At $K = 3$ and $\eta = 0.5$, the regret is bounded by $2 \log 3 \approx 2.197$ **regardless of the sequence length**. This is the strongest of the three horizon-specific bounds.
+**Corollary (one-session).** When feedback is immediate and $`\eta \le 1/2`$, the loss exponential is concave on the trace-one domain. Jensen's inequality replaces the bounded-moment bound, eliminating the $`\eta T / 8`$ term. At $`K = 3`$ and $`\eta = 0.5`$, the regret is bounded by $`2 \log 3 \approx 2.197`$ **regardless of the sequence length**. This is the strongest of the three horizon-specific bounds.
 
-**Practical context.** The general delayed bound at 22 sessions (2,781.8 for 1,045 origins) exceeds one loss unit per origin and is therefore vacuous at that horizon. The sharper constant bound at $h = 1$ is the operationally useful result.
+**Practical context.** The general delayed bound at 22 sessions (2,781.8 for 1,045 origins) exceeds one loss unit per origin and is therefore vacuous at that horizon. The sharper constant bound at $`h = 1`$ is the operationally useful result.
 
 ---
 
@@ -104,16 +120,16 @@ $$\sum_{t=1}^T \ell(C_{p_t}, C_t^*) - \min_j \sum_{t=1}^T \ell_{t,j} \;\le\; \fr
 | --- | --- |
 | **development period** | July 2022 – December 2024 (623 one-session origins) |
 | **confirmation period** | January 2025 – October 2026 (443 one-session origins) |
-| **split timing** | method, experts and $\eta = 0.5$ fixed after inspecting development; before running confirmation |
+| **split timing** | method, experts and $`\eta = 0.5`$ fixed after inspecting development; before running confirmation |
 | **primary endpoint** | adaptive vs. uniform one-session normalized shape loss |
 | **secondary endpoints** | 5- and 22-session shape loss; raw matrix losses; portfolio risk |
-| **bootstrap** | 10,000 stationary-bootstrap draws, seeded; mean block max(5, $h$) for shape, max(2, $h$) for MCS |
+| **bootstrap** | 10,000 stationary-bootstrap draws, seeded; mean block max(5, $`h`$) for shape, max(2, $`h`$) for MCS |
 
 This local design record is not an external preregistration. Forecasts and mixture weights continue to update causally during confirmation.
 
 ### Expert Construction
 
-The three experts are computed from the same synchronized five-minute return covariances. Each expert's unit-trace shape $C_j = S_j / \text{tr}(S_j)$ preserves its relative eigenvalue structure while removing the total-variance dimension. The common scale $\tau_t = \text{tr}(\hat{S}_t^{\text{HAR-DRD}})$ is applied to the mixture shape, yielding the final forecast $\hat{S}_t = \tau_t \cdot C_{p_t}$.
+The three experts are computed from the same synchronized five-minute return covariances. Each expert's unit-trace shape $`C_j = S_j / \text{tr}(S_j)`$ preserves its relative eigenvalue structure while removing the total-variance dimension. The common scale $`\tau_t = \text{tr}(\hat{S}_t^{\text{HAR-DRD}})`$ is applied to the mixture shape, yielding the final forecast $`\hat{S}_t = \tau_t \cdot C_{p_t}`$.
 
 ---
 
@@ -133,7 +149,7 @@ Five-session (CI: [−3.16 × 10⁻⁵, +9.26 × 10⁻⁶]) and 22-session (CI: 
 
 ### 3.2  Development vs. Confirmation Dynamics
 
-| period | $h$ | origins | adaptive mean | uniform mean | difference | 95% lower | 95% upper |
+| period | $`h`$ | origins | adaptive mean | uniform mean | difference | 95% lower | 95% upper |
 | --- | ---: | ---: | --- | --- | --- | --- | --- |
 | development | 1 | 623 | 0.02190 | 0.02192 | −2.19 × 10⁻⁵ | −3.17 × 10⁻⁵ | −1.22 × 10⁻⁵ |
 | confirmation | 1 | 443 | 0.02475 | 0.02478 | −3.21 × 10⁻⁵ | −7.02 × 10⁻⁵ | +4.42 × 10⁻⁶ |
@@ -142,11 +158,11 @@ Five-session (CI: [−3.16 × 10⁻⁵, +9.26 × 10⁻⁶]) and 22-session (CI: 
 | development | 22 | 602 | 0.00867 | 0.00870 | −2.31 × 10⁻⁵ | −3.48 × 10⁻⁵ | −1.27 × 10⁻⁵ |
 | confirmation | 22 | 422 | 0.01199 | 0.01199 | −2.33 × 10⁻⁷ | −4.77 × 10⁻⁵ | +7.57 × 10⁻⁵ |
 
-**Key observation:** Development intervals are entirely negative at all three horizons; confirmation intervals all include zero. This degradation pattern is consistent with overfitting to development-period regularities and underscores why pre-registration and out-of-sample confirmation are essential.
+**Key observation:** Development intervals are entirely negative at all three horizons; confirmation intervals all include zero. The development gains are not confirmed by these intervals. These comparisons alone do not identify whether the change comes from overfitting, market regimes or other sample differences.
 
-### 3.3  Raw Matrix Losses (Confirmation, $h = 1$)
+### 3.3  Raw Matrix Losses (Confirmation, $`h = 1`$)
 
-| model | Euclidean ratio | Frobenius ratio | QLIKE ratio | Euclidean MCS $p$ | Frobenius MCS $p$ | QLIKE MCS $p$ |
+| model | Euclidean ratio | Frobenius ratio | QLIKE ratio | Euclidean MCS $`p`$ | Frobenius MCS $`p`$ | QLIKE MCS $`p`$ |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | **Adaptive shape** | **0.9977** | **0.9979** | **0.9918** | 1.000 | 1.000 | 1.000 |
 | Uniform shape | 0.9982 | 0.9987 | 0.9926 | 0.377 | 0.527 | <0.001 |
@@ -173,7 +189,7 @@ Ratios use HAR-DRD as the denominator; lower is better. The adaptive mixture has
 
 ### 3.5  Conditioning and Stability Diagnostics
 
-| model | median $\kappa$ | max $\kappa$ | max gross leverage | max leverage date | min eigenvalue |
+| model | median $`\kappa`$ | max $`\kappa`$ | max gross leverage | max leverage date | min eigenvalue |
 | --- | ---: | ---: | ---: | --- | ---: |
 | HAR-DRD | 38.00 | 157.23 | 2.07 | 2025-04-14 | 0.2151 |
 | GHAR(GL,L) | 33.12 | **127,174** | **37.05** | 2025-04-11 | 0.0017 |
@@ -181,7 +197,7 @@ Ratios use HAR-DRD as the denominator; lower is better. The adaptive mixture has
 | Uniform shape | 36.42 | 218.93 | 2.30 | 2025-04-14 | 0.2157 |
 | Adaptive shape | 35.70 | 223.37 | 2.32 | 2025-04-11 | 0.2137 |
 
-The raw GHAR(GL,L) forecast's condition number exceeds 127,000, producing gross leverage above 37× and explaining its 30.2% unrestricted GMVP risk. The adaptive mixture's condition-number maximum (223.37) is three orders of magnitude smaller, confirming that the convex combination regularizes the ill-conditioned graph expert. April 2025 concentrates the most extreme conditioning events across all models.
+The raw GHAR(GL,L) forecast reaches condition number 127,174 and gross leverage 37.05. The adaptive mixture's maximum condition number is 223.37, approximately **570 times smaller**. These diagnostics expose inverse sensitivity and extreme positions; they do not isolate the cause of each realized loss or establish a universal conditioning guarantee for shape mixing. The separately designed spectral guard has its own explicit bound; see [Proposition 6](theory.md#proposition-6-spectral-conditioning-and-gross-leverage).
 
 ---
 
@@ -195,7 +211,7 @@ The raw GHAR(GL,L) forecast's condition number exceeds 127,000, producing gross 
 
 **At one session**, the adaptive mixture's cumulative shape loss is 24.608, versus 24.688 for the best fixed expert over the full 2022–2026 run. Its regret of **−0.080** is not only within the theoretical bound of 2.197 but is **negative** — meaning the adaptive learner outperformed the best fixed expert in hindsight. This is a realized performance statement over the complete learning trajectory; it is not an independently reset confirmation guarantee.
 
-**At 22 sessions**, regret is positive (+0.136) and the theoretical bound (2,781.8) is vacuous. The delay penalty $(\eta/4) \sum_t d_t$ dominates when unresolved labels accumulate, as 21,714 total delayed observations inflate the bound far beyond practical informativeness.
+**At 22 sessions**, regret is positive (+0.136) and the theoretical bound (2,781.8) is vacuous. The delay penalty $`(\eta/4) \sum_t d_t`$ dominates when unresolved labels accumulate, as 21,714 total delayed observations inflate the bound far beyond practical informativeness.
 
 ---
 
@@ -203,13 +219,10 @@ The raw GHAR(GL,L) forecast's condition number exceeds 127,000, producing gross 
 
 Development favored the raw graph model over HAR-DRD on short-horizon matrix losses. That ordering **reverses** for one-session confirmation losses. A fixed uniform combination already captures most of the mixture's descriptive advantage. Evaluating only the development period would give an **overly favorable impression** of the incremental value of adaptive weights.
 
-### Regime-Dependent Weight Dynamics
+### Causal Weight Dynamics
 
-The exponential-weights algorithm adjusts expert participation in real time. During development, it learned to moderately underweight the GHAR(GL,L) expert when its forecasts became poorly conditioned. During confirmation, the available evidence suggests that:
+The exponential-weights rule uses only cumulative observed shape losses. It has no explicit condition-number or volatility-regime input. The saved weight plot shows the realized path, but the tables above do not establish a causal regime explanation or a rule that admits the graph expert only at moderate condition numbers. Those claims require a separate analysis.
 
-1. **HAR-DRD** receives the largest average weight across both periods, reflecting its robust conditioning and consistent middle-of-the-pack accuracy.
-2. **HAR-Cholesky** receives elevated weight during low-volatility regimes where its direct Cholesky decomposition avoids the variance–correlation separation error.
-3. **GHAR(GL,L)** receives meaningful weight only when its condition number remains moderate, effectively auto-regularizing through the mixture.
 
 ---
 
@@ -219,10 +232,10 @@ The exponential-weights algorithm adjusts expert participation in real time. Dur
 | --- | --- |
 | **Forecast pooling** | Combine distinct covariance estimates while preserving positive definiteness and a chosen trace; retain the uniform mixture as a simple, strong control for the value of learning. |
 | **Risk-model review** | Distinguish lower covariance error from lower allocation risk using a reproducible counterexample (Proposition 2), raw matrix losses, and both portfolio constraint sets. |
-| **Pair-network design** | Compute stock-pair message aggregation through endpoint sums and quantify how repeated aggregation reduces centered contrasts at rate $\rho_{27}^k = 0.46^k$. |
+| **Pair-network design** | Compute stock-pair message aggregation through endpoint sums and quantify how repeated aggregation reduces centered contrasts at rate $`\rho_{27}^k = 0.46^k`$. |
 | **Delayed targets** | Release multi-session labels only after the final retained session, preventing unresolved targets from influencing earlier mixture weights. The formal delayed-feedback bound governs this causal constraint. |
 | **Research replication** | Compare the same method across development and confirmation periods and report when the paper's model ranking fails to carry over — a template for honest method evaluation. |
-| **Regularization via mixing** | The mixture's condition number (max 223) is three orders of magnitude below the raw graph model's (max 127,174), providing an implicit spectral regularizer without explicit eigenvalue surgery. |
+| **Regularization via mixing** | The observed maximum condition number is about 570 times smaller than the raw graph model's. This is a sample diagnostic, rather than a general conditioning guarantee. |
 
 These are **research uses**. This experiment does not validate a live allocation policy or include execution costs.
 
@@ -241,7 +254,7 @@ The strict shared-calendar rule removes sessions, particularly before 2022, so a
 ### Statistical Methodology
 
 - All six shape intervals (3 horizons × 2 periods) are **pointwise**, without a simultaneous multiple-testing guarantee.
-- Stationary-bootstrap draws are seeded with 10,000 replications; the primary interval's mean block length is max(5, $h$), and MCS uses max(2, $h$).
+- Stationary-bootstrap draws are seeded with 10,000 replications; the primary interval's mean block length is max(5, $`h`$), and MCS uses max(2, $`h`$).
 - MCS is a sequential elimination procedure; a single paired comparison and a multi-model elimination procedure answer different statistical questions.
 
 ### Reproducibility
