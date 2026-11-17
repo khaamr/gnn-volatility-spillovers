@@ -4,7 +4,7 @@
 
 **realized covariance replication · graph spillovers · geometric spectral learning**
 
-[website files](index.html) · [replication](covariance_replication/Covariance_Replication.ipynb) · [shape extension](covariance_replication/Extended_Covariance.ipynb) · [spectral extension](covariance_replication/Spectral_Covariance.ipynb) · [interactive figures](research_dashboard.html) · [proofs](covariance_replication/docs/theory.md)
+[live website](https://khaamr.github.io/graph-covariance-forecasting/) · [replication](covariance_replication/Covariance_Replication.ipynb) · [shape extension](covariance_replication/Extended_Covariance.ipynb) · [spectral extension](covariance_replication/Spectral_Covariance.ipynb) · [interactive figures](research_dashboard.html) · [proofs](covariance_replication/docs/theory.md)
 
 **27 stocks &nbsp; / &nbsp; 13 reference specifications &nbsp; / &nbsp; 3 horizons &nbsp; / &nbsp; 9 interactive figures**
 
@@ -22,7 +22,7 @@ based on **_graph-based methods for forecasting realized covariances_** by Zhang
 
 | start here | what you will find |
 | --- | --- |
-| [supplied website](index.html) | the project single-page site; download the folder and open index.html locally |
+| [live website](https://khaamr.github.io/graph-covariance-forecasting/) | the project site with the pipeline, results, uncertainty tables and theory overview |
 | [covariance replication](covariance_replication/Covariance_Replication.ipynb) | har-cholesky, har-drd and graph specifications at 1, 5 and 22 retained sessions |
 | [adaptive shape extension](covariance_replication/Extended_Covariance.ipynb) | delayed-feedback expert mixing, unit-trace covariance shapes and portfolio checks |
 | [geometric spectral extension](covariance_replication/Spectral_Covariance.ipynb) | regime-dependent pooling, learned eigenvalue cleaning and equal accuracy/risk objectives |
@@ -32,9 +32,9 @@ based on **_graph-based methods for forecasting realized covariances_** by Zhang
 
 ## website
 
-[open the site source](index.html) · [download the project](https://github.com/khaamr/gnn-volatility-spillovers/archive/refs/heads/main.zip)
+[visit the live website](https://khaamr.github.io/graph-covariance-forecasting/) · [site source](index.html) · [download the project](https://github.com/khaamr/graph-covariance-forecasting/archive/refs/heads/main.zip)
 
-the supplied site includes the pipeline, results, uncertainty tables and theory overview. after downloading the project, open index.html in a browser. GitHub Pages remains disabled, so this is a link to the committed site files rather than a live hosted address.
+the site is published on GitHub Pages and includes the pipeline, results, uncertainty tables and theory overview. the downloadable project also opens locally through index.html.
 
 ## from prices to portfolio outcomes
 
