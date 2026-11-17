@@ -1,0 +1,49 @@
+{
+  "architecture": "geometric covariance pool with regime gate and learned spectral cleaning",
+  "primary_endpoints": [
+    "one-session mean Frobenius distance",
+    "one-session long-only portfolio realized variance"
+  ],
+  "primary_reference": "HAR-DRD",
+  "strong_controls": [
+    "Adaptive shape",
+    "Uniform shape",
+    "HAR-Cholesky",
+    "static geometric pool"
+  ],
+  "expert_bank": [
+    "HAR-DRD",
+    "GHAR(GL,L)",
+    "HAR-Cholesky",
+    "arithmetic HAR covariance",
+    "log-Euclidean HAR covariance"
+  ],
+  "training": "equal normalized forecast-distance and squared portfolio-return losses",
+  "rolling_history": 504,
+  "minimum_history": 378,
+  "inner_validation": 126,
+  "epoch_checkpoints": [
+    0,
+    5,
+    10,
+    20,
+    40
+  ],
+  "selection": "minimize worse of validation Frobenius ratio and long-only mean-square-return ratio against HAR-DRD",
+  "seed": 2026,
+  "learning_rate": 0.01,
+  "weight_decay": 0.001,
+  "hidden_units": 8,
+  "condition_limit": 100,
+  "differentiable_simplex_steps": 40,
+  "evaluation_start": "2024-01-01",
+  "reused_benchmark_start": "2025-01-01",
+  "data_end": "2026-10-23",
+  "bootstrap_draws": 10000,
+  "bootstrap_mean_block": 10,
+  "success_rule": "both primary paired 95% intervals must be strictly below zero against HAR-DRD; report other comparisons separately",
+  "qualification": "2025-2026 outcomes were already inspected for the previous extension; this is a reused retrospective benchmark, not a fresh confirmation sample",
+  "iteration_rule": "report the fixed candidate and its static control without retuning after viewing benchmark outcomes",
+  "gate_refit_period": "Q",
+  "gate_refit_note": "quarterly gate refits; daily observed inputs; original HAR experts retain monthly refits"
+}
