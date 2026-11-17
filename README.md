@@ -38,5 +38,3 @@ python -m unittest discover -s tests -v
 ~~~
 
 open a notebook with this kernel and run all cells from that folder. the first run caches approximately 0.5 gb of public data. the spectral notebook uses pytorch on cpu and also exports its fold audit, paired comparisons and solver diagnostics.
-
-## research attribution
