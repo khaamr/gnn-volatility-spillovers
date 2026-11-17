@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1040" viewBox="0 0 1200 1040" role="img" aria-labelledby="title"><title id="title">Adaptive covariance forecasting architecture</title>
+<defs><marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L11 6L0 12z" fill="#76948e"/></marker></defs>
+<g font-family="Helvetica, Arial, sans-serif">
+<rect x="0" y="0" width="1200" height="1040" rx="0" fill="#f4f7f5" stroke="none" stroke-width="1.5"/>
+<rect x="0" y="0" width="1200" height="158" rx="0" fill="#142e34" stroke="none" stroke-width="1.5"/>
+<text x="48" y="42" fill="#9ce0c7" font-size="18" font-weight="700" text-anchor="start">research extension</text>
+<text x="46" y="96" fill="#fff" font-size="45" font-weight="700" text-anchor="start">learn covariance shape from resolved forecasts</text>
+<text x="48" y="133" fill="#c3d9d8" font-size="21" font-weight="400" text-anchor="start">three experts share a common total-variance forecast; weights use past outcomes</text>
+<rect x="48" y="187" width="1104" height="66" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<text x="600" y="228" fill="#183239" font-size="25" font-weight="700" text-anchor="middle">27 stocks → synchronized returns → realized covariance history</text>
+<path d="M600 253V278H226V299" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M600 278V299" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M600 278H974V299" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="48" y="302" width="354" height="100" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<text x="68" y="342" fill="#183239" font-size="26" font-weight="700" text-anchor="start">har-drd</text>
+<text x="68" y="373" fill="#526970" font-size="18" font-weight="400" text-anchor="start">own variance + correlation history</text>
+<rect x="423" y="302" width="354" height="100" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<text x="443" y="342" fill="#183239" font-size="26" font-weight="700" text-anchor="start">ghar(gl,l)</text>
+<text x="443" y="373" fill="#526970" font-size="18" font-weight="400" text-anchor="start">stock graph + stock-pair graph</text>
+<rect x="798" y="302" width="354" height="100" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<text x="818" y="342" fill="#183239" font-size="26" font-weight="700" text-anchor="start">har-cholesky</text>
+<text x="818" y="373" fill="#526970" font-size="18" font-weight="400" text-anchor="start">forecast lower-triangular factors</text>
+<path d="M226 402V426" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M600 402V426" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M974 402V426" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="48" y="428" width="1104" height="73" rx="14" fill="#e3f2eb" stroke="#c9e4d7" stroke-width="1.5"/>
+<text x="72" y="459" fill="#183239" font-size="26" font-weight="700" text-anchor="start">normalize each forecast to trace one</text>
+<text x="72" y="486" fill="#526970" font-size="20" font-weight="400" text-anchor="start">separate the covariance shape from its total scale</text>
+<path d="M312 501V542" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="48" y="546" width="527" height="116" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<text x="70" y="580" fill="#183239" font-size="25" font-weight="700" text-anchor="start">predict with past-loss weights</text>
+<text x="70" y="612" fill="#526970" font-size="20" font-weight="400" text-anchor="start">exponential weights; fixed learning rate 0.5</text>
+<text x="70" y="641" fill="#526970" font-size="20" font-weight="400" text-anchor="start">no unresolved target enters the update</text>
+<rect x="623" y="546" width="529" height="116" rx="14" fill="#efedf8" stroke="#ded9ec" stroke-width="1.5"/>
+<text x="647" y="580" fill="#183239" font-size="25" font-weight="700" text-anchor="start">release each target when observed</text>
+<text x="647" y="612" fill="#526970" font-size="20" font-weight="400" text-anchor="start">one session: update at the next origin</text>
+<text x="647" y="641" fill="#526970" font-size="20" font-weight="400" text-anchor="start">multiple sessions: wait for the final outcome</text>
+<path d="M623 604H578" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="887" y="531" fill="#526970" font-size="18" font-weight="400" text-anchor="middle">realized target arrives after its final session</text>
+<path d="M312 662V691H600V714" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="48" y="717" width="1104" height="93" rx="14" fill="#142e34" stroke="#142e34" stroke-width="1.5"/>
+<text x="72" y="753" fill="#fff" font-size="28" font-weight="700" text-anchor="start">combine shape and the har-drd trace</text>
+<text x="72" y="786" fill="#d0e5e1" font-size="21" font-weight="400" text-anchor="start">convex shape mixture × positive scale → a positive-definite covariance forecast</text>
+<path d="M600 810V839H312V861" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M600 839H887V861" stroke="#76948e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="48" y="864" width="527" height="114" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<text x="72" y="899" fill="#183239" font-size="25" font-weight="700" text-anchor="start">test accuracy</text>
+<text x="72" y="931" fill="#526970" font-size="20" font-weight="400" text-anchor="start">shape loss, raw matrix losses and mcs</text>
+<text x="72" y="959" fill="#526970" font-size="20" font-weight="400" text-anchor="start">uniform and common-trace controls</text>
+<rect x="623" y="864" width="529" height="114" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<text x="647" y="899" fill="#183239" font-size="25" font-weight="700" text-anchor="start">test portfolio outcomes</text>
+<text x="647" y="931" fill="#526970" font-size="20" font-weight="400" text-anchor="start">gmvp, long-only gmvp+ and turnover</text>
+<text x="647" y="959" fill="#526970" font-size="20" font-weight="400" text-anchor="start">confirmation outcomes start in 2025</text>
+</g></svg>
