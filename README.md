@@ -143,4 +143,3 @@ python export_figures.py
 - **evaluation:** portfolio returns are open-to-close and exclude transaction costs. the newer architecture's benchmark is reused, and independent confirmation remains necessary.
 
 [pinned public data](https://huggingface.co/datasets/syncster-data/historical-market-data/tree/eff0dac55d843b3b83caec819efa213021a3e3e5) · [data and protocol audit](covariance_replication/docs/protocol-audit.md)
-
