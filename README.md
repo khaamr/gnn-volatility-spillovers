@@ -1,6 +1,6 @@
 # graph covariance forecasting
 
-replication and extension of **graph-based methods for forecasting realized covariances** by zhang, pu, cucuringu and dong. this project forecasts the full covariance matrix of 27 stocks and tests whether graph spillovers improve matrix accuracy and minimum-variance portfolios.
+replication and extension of **graph-based methods for forecasting realized covariances** by Zhang, Pu,Cucuringu and Dong. this project forecasts the full covariance matrix of 27 stocks and tests whether graph spillovers improve matrix accuracy and minimum-variance portfolios.
 
 [replication notebook](covariance_replication/Covariance_Replication.ipynb) · [shape extension](covariance_replication/Extended_Covariance.ipynb) · [geometric spectral extension](covariance_replication/Spectral_Covariance.ipynb) · [proofs](covariance_replication/docs/theory.md) · [journal article](https://doi.org/10.1093/jjfinec/nbae026)
 
