@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="976" viewBox="0 0 1200 976" role="img" aria-labelledby="title desc">
+<title id="title">Graph-based covariance forecast architecture</title>
+<desc id="desc">Minute prices produce daily realized covariance matrices. Variances and correlations are forecast separately using stock and stock-pair graphs. The forecasts are recombined and evaluated against realized matrices and in portfolio simulations.</desc>
+<defs><marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L11 6L0 12z" fill="#78938f"/></marker></defs>
+<g font-family="Helvetica, Arial, sans-serif">
+<rect x="0" y="0" width="1200" height="976" rx="0" fill="#f4f7f5" stroke="none" stroke-width="1.4"/>
+<rect x="0" y="0" width="1200" height="158" rx="0" fill="#142e34" stroke="none" stroke-width="1.4"/>
+<text x="48" y="42" fill="#9ce0c7" font-weight="700" font-size="18" text-anchor="start">RESEARCH REPLICATION  /  MODEL ARCHITECTURE</text>
+<text x="46" y="96" fill="#ffffff" font-weight="700" font-size="47" text-anchor="start">Forecasting realized covariances</text>
+<text x="48" y="133" fill="#c4dadd" font-weight="400" font-size="22" text-anchor="start">Graph-based HAR forecasts the full matrix of asset co-movements</text>
+<rect x="48" y="188" width="1104" height="79" rx="15" fill="#fff" stroke="#d8e4e0" stroke-width="1.4"/>
+<text x="70" y="221" fill="#193038" font-weight="700" font-size="27" text-anchor="start">Synchronized minute prices</text>
+<text x="70" y="249" fill="#4a626b" font-weight="400" font-size="20" text-anchor="start">Public: Syncster trade bars  ·  Original study: licensed LOBSTER quote midpoints</text>
+<path d="M600 267V287" fill="none" stroke="#78938f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="48" y="289" width="1104" height="79" rx="15" fill="#fff" stroke="#d8e4e0" stroke-width="1.4"/>
+<text x="70" y="322" fill="#193038" font-weight="700" font-size="27" text-anchor="start">Daily realized covariance  H</text>
+<text x="70" y="351" fill="#4a626b" font-weight="400" font-size="20" text-anchor="start">Average five offset grids of five-minute returns; split H = D R D</text>
+<path d="M600 368V393H312V417" fill="none" stroke="#78938f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M600 393H888V417" fill="none" stroke="#78938f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="48" y="420" width="528" height="200" rx="15" fill="#e2f2ea" stroke="#c7e1d3" stroke-width="1.4"/>
+<text x="72" y="451" fill="#12685e" font-weight="700" font-size="17" text-anchor="start">DIAGONAL  /  27 STOCKS</text>
+<text x="72" y="489" fill="#193038" font-weight="700" font-size="29" text-anchor="start">Forecast stock variances</text>
+<text x="72" y="528" fill="#4a626b" font-weight="400" font-size="20" text-anchor="start">HAR lags: 1, 2–5 and 6–22 sessions</text>
+<text x="72" y="556" fill="#4a626b" font-weight="400" font-size="20" text-anchor="start">Add neighbors from the stock graph</text>
+<text x="72" y="584" fill="#4a626b" font-weight="400" font-size="20" text-anchor="start">Empty, sector, complete or GLASSO</text>
+<rect x="624" y="420" width="528" height="200" rx="15" fill="#efedf9" stroke="#dcd8ee" stroke-width="1.4"/>
+<text x="648" y="451" fill="#574d97" font-weight="700" font-size="17" text-anchor="start">OFF-DIAGONAL  /  351 STOCK PAIRS</text>
+<text x="648" y="489" fill="#193038" font-weight="700" font-size="29" text-anchor="start">Forecast pair correlations</text>
+<text x="648" y="528" fill="#4a626b" font-weight="400" font-size="20" text-anchor="start">Same HAR lags for each correlation series</text>
+<text x="648" y="556" fill="#4a626b" font-weight="400" font-size="20" text-anchor="start">Line graph joins pairs that share a stock</text>
+<text x="648" y="584" fill="#4a626b" font-weight="400" font-size="20" text-anchor="start">Compare empty, complete and line graphs</text>
+<path d="M312 620V646H600 M888 620V646H600V669" fill="none" stroke="#78938f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="48" y="671" width="1104" height="110" rx="15" fill="#142e34" stroke="#142e34" stroke-width="1.4"/>
+<text x="72" y="707" fill="#fff" font-weight="700" font-size="28" text-anchor="start">Reconstruct the forecast matrix  Σ̂ = D̂ R̂ D̂</text>
+<text x="72" y="738" fill="#d2e6e3" font-weight="400" font-size="20" text-anchor="start">Monthly OLS refits  ·  1,000-session lookback  ·  1-, 5- and 22-session targets</text>
+<text x="72" y="765" fill="#d2e6e3" font-weight="400" font-size="20" text-anchor="start">Clip correlations, repair eigenvalues and compare against HAR-Cholesky</text>
+<path d="M600 781V816" fill="none" stroke="#78938f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="48" y="818" width="1104" height="109" rx="15" fill="#fff" stroke="#d8e4e0" stroke-width="1.4"/>
+<text x="72" y="856" fill="#193038" font-weight="700" font-size="24" text-anchor="start">Forecast accuracy</text>
+<text x="72" y="887" fill="#4a626b" font-weight="400" font-size="20" text-anchor="start">Matrix losses and MCS</text>
+<text x="431" y="856" fill="#193038" font-weight="700" font-size="24" text-anchor="start">Portfolio risk</text>
+<text x="431" y="887" fill="#4a626b" font-weight="400" font-size="20" text-anchor="start">GMVP, GMVP+ and turnover</text>
+<text x="806" y="856" fill="#193038" font-weight="700" font-size="24" text-anchor="start">Robustness</text>
+<text x="806" y="887" fill="#4a626b" font-weight="400" font-size="20" text-anchor="start">SPY stress and HARQ checks</text>
+</g></svg>
