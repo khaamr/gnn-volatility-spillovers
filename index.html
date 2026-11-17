@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graph Covariance Forecasting</title>
+<meta name="description" content="Realized covariance replication, graph spillovers and geometric spectral learning — 27 stocks, 13 reference specifications, 3 horizons.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════ RESET & BASE ═══════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-dark:#0a0e1a;
+  --bg-card:#111827;
+  --bg-card-alt:#0f172a;
+  --border:#1e293b;
+  --border-glow:rgba(99,130,255,.18);
+  --accent:#6b8aff;
+  --accent2:#8b5cf6;
+  --accent3:#22d3ee;
+  --text:#e2e8f0;
+  --text-dim:#94a3b8;
+  --text-bright:#f8fafc;
+  --radius:12px;
+  --radius-lg:20px;
+  --shadow-card:0 4px 32px rgba(0,0,0,.35);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:var(--bg-dark);
+  color:var(--text);
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:var(--accent);text-decoration:none;transition:color .2s}
+a:hover{color:var(--accent3)}
+img{max-width:100%;display:block}
+code,pre{font-family:'JetBrains Mono',monospace}
+code{background:rgba(99,130,255,.1);padding:2px 6px;border-radius:4px;font-size:.88em;color:var(--accent3)}
+
+/* ═══════════ LAYOUT ═══════════ */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+section{padding:100px 0}
+section:nth-child(even){background:var(--bg-card-alt)}
+
+/* ═══════════ HERO ═══════════ */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  text-align:center;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:url('docs/images/hero-bg.jpg') center/cover no-repeat;
+  filter:brightness(.35);
+  z-index:0;
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,14,26,.4) 0%,rgba(10,14,26,.92) 100%);
+  z-index:1;
+}
+.hero-content{
+  position:relative;z-index:2;
+  max-width:850px;
+  padding:40px 24px;
+}
+.hero-logo{
+  width:120px;height:120px;
+  border-radius:24px;
+  margin:0 auto 32px;
+  box-shadow:0 0 60px rgba(107,138,255,.3);
+  border:2px solid rgba(107,138,255,.25);
+}
+.hero h1{
+  font-size:clamp(2.2rem,5.5vw,3.8rem);
+  font-weight:700;
+  letter-spacing:-.02em;
+  color:var(--text-bright);
+  margin-bottom:16px;
+  line-height:1.15;
+}
+.hero h1 span{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero .subtitle{
+  font-size:1.15rem;
+  color:var(--text-dim);
+  margin-bottom:40px;
+  font-weight:300;
+  max-width:620px;
+  margin-left:auto;margin-right:auto;
+}
+.hero-stats{
+  display:flex;
+  gap:32px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:40px;
+}
+.hero-stat{
+  text-align:center;
+}
+.hero-stat .num{
+  font-size:2rem;font-weight:700;
+  background:linear-gradient(135deg,var(--accent),var(--accent3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-stat .label{
+  font-size:.82rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;
+}
+.btn-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 28px;border-radius:10px;
+  font-weight:600;font-size:.95rem;
+  transition:all .25s;
+  border:1px solid transparent;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px rgba(107,138,255,.35);
+  color:#fff;
+}
+.btn-outline{
+  border-color:var(--border);
+  color:var(--text);
+  background:rgba(255,255,255,.04);
+}
+.btn-outline:hover{
+  border-color:var(--accent);
+  background:rgba(107,138,255,.08);
+  color:var(--accent);
+}
+.scroll-indicator{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  z-index:2;animation:bounce 2s infinite;
+}
+.scroll-indicator svg{width:24px;height:24px;stroke:var(--text-dim)}
+@keyframes bounce{
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(8px)}
+}
+
+/* ═══════════ NAV ═══════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  z-index:100;
+  backdrop-filter:blur(20px);
+  background:rgba(10,14,26,.8);
+  border-bottom:1px solid var(--border);
+  transition:all .3s;
+}
+nav .container{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:14px;padding-bottom:14px;
+}
+.nav-brand{
+  display:flex;align-items:center;gap:10px;
+  font-weight:600;font-size:1.05rem;color:var(--text-bright);
+}
+.nav-brand img{width:32px;height:32px;border-radius:8px}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{color:var(--text-dim);font-size:.88rem;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--accent)}
+.hamburger{display:none;background:none;border:none;cursor:pointer}
+.hamburger svg{width:24px;height:24px;stroke:var(--text)}
+
+/* ═══════════ SECTION HEADER ═══════════ */
+.section-header{text-align:center;margin-bottom:64px}
+.section-header .tag{
+  display:inline-block;
+  font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--accent);font-weight:600;
+  margin-bottom:12px;
+  background:rgba(107,138,255,.1);
+  padding:6px 16px;border-radius:999px;
+}
+.section-header h2{
+  font-size:clamp(1.6rem,3.5vw,2.4rem);
+  font-weight:700;color:var(--text-bright);
+  margin-bottom:16px;
+}
+.section-header p{
+  color:var(--text-dim);max-width:640px;margin:0 auto;font-size:1.05rem;
+}
+
+/* ═══════════ CARDS ═══════════ */
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:24px;
+}
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:32px;
+  transition:all .3s;
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  opacity:0;transition:opacity .3s;
+}
+.card:hover{
+  border-color:var(--border-glow);
+  transform:translateY(-4px);
+  box-shadow:var(--shadow-card);
+}
+.card:hover::before{opacity:1}
+.card-icon{
+  width:48px;height:48px;
+  border-radius:12px;
+  background:rgba(107,138,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;
+}
+.card-icon svg{width:24px;height:24px;stroke:var(--accent)}
+.card h3{font-size:1.15rem;font-weight:600;color:var(--text-bright);margin-bottom:10px}
+.card p{color:var(--text-dim);font-size:.92rem;line-height:1.65}
+
+/* ═══════════ RESULTS TABLE ═══════════ */
+.table-wrap{
+  overflow-x:auto;
+  border-radius:var(--radius-lg);
+  border:1px solid var(--border);
+  background:var(--bg-card);
+  box-shadow:var(--shadow-card);
+}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead{background:rgba(107,138,255,.06)}
+th{
+  padding:14px 18px;text-align:left;
+  font-weight:600;color:var(--accent);
+  font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;
+  border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+td{
+  padding:12px 18px;border-bottom:1px solid rgba(30,41,59,.5);
+  white-space:nowrap;
+}
+tr:last-child td{border-bottom:none}
+tr:hover{background:rgba(107,138,255,.04)}
+.best{color:var(--accent3);font-weight:600}
+.highlight-row{background:rgba(107,138,255,.06) !important}
+
+/* ═══════════ PIPELINE ═══════════ */
+.pipeline{
+  display:flex;
+  align-items:center;
+  gap:0;
+  overflow-x:auto;
+  padding:40px 0;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.pipe-step{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px 24px;
+  text-align:center;
+  min-width:160px;
+  transition:all .3s;
+}
+.pipe-step:hover{
+  border-color:var(--accent);
+  box-shadow:0 0 24px rgba(107,138,255,.15);
+}
+.pipe-step .step-num{
+  font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--accent);font-weight:600;margin-bottom:6px;
+}
+.pipe-step h4{font-size:.9rem;color:var(--text-bright);font-weight:600;margin-bottom:4px}
+.pipe-step p{font-size:.78rem;color:var(--text-dim)}
+.pipe-arrow{
+  color:var(--accent);font-size:1.5rem;padding:0 8px;
+  flex-shrink:0;
+}
+
+/* ═══════════ THEOREM BOXES ═══════════ */
+.theorem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
+.theorem-box{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:28px;
+  border-left:3px solid var(--accent);
+  transition:all .3s;
+}
+.theorem-box:hover{
+  border-left-color:var(--accent2);
+  box-shadow:var(--shadow-card);
+}
+.theorem-box .theorem-label{
+  font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--accent2);font-weight:600;margin-bottom:8px;
+}
+.theorem-box h4{font-size:1rem;color:var(--text-bright);font-weight:600;margin-bottom:8px}
+.theorem-box p{font-size:.88rem;color:var(--text-dim);line-height:1.6}
+
+/* ═══════════ METRICS ROW ═══════════ */
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  margin:40px 0;
+}
+.metric{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:24px;
+  text-align:center;
+}
+.metric .value{
+  font-size:2rem;font-weight:700;
+  background:linear-gradient(135deg,var(--accent),var(--accent3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.metric .metric-label{
+  font-size:.82rem;color:var(--text-dim);margin-top:6px;
+}
+.metric .metric-sub{font-size:.72rem;color:var(--text-dim);margin-top:2px}
+
+/* ═══════════ ARCHITECTURE IMG ═══════════ */
+.arch-img{
+  border-radius:var(--radius-lg);
+  border:1px solid var(--border);
+  overflow:hidden;
+  margin:32px auto;
+  max-width:800px;
+  box-shadow:var(--shadow-card);
+}
+.arch-img img{width:100%;display:block}
+
+/* ═══════════ TIMELINE ═══════════ */
+.timeline{position:relative;padding-left:32px;margin:40px 0}
+.timeline::before{
+  content:'';position:absolute;left:12px;top:0;bottom:0;
+  width:2px;background:linear-gradient(to bottom,var(--accent),var(--accent2));
+}
+.timeline-item{position:relative;margin-bottom:32px}
+.timeline-item::before{
+  content:'';position:absolute;left:-26px;top:6px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 12px rgba(107,138,255,.4);
+}
+.timeline-item h4{color:var(--text-bright);font-weight:600;font-size:1rem;margin-bottom:4px}
+.timeline-item .date{font-size:.82rem;color:var(--accent);margin-bottom:6px}
+.timeline-item p{color:var(--text-dim);font-size:.9rem}
+
+/* ═══════════ FOOTER ═══════════ */
+footer{
+  padding:60px 0 40px;
+  border-top:1px solid var(--border);
+  text-align:center;
+}
+footer .footer-links{
+  display:flex;gap:28px;justify-content:center;flex-wrap:wrap;
+  margin-bottom:20px;
+}
+footer .footer-links a{color:var(--text-dim);font-size:.88rem}
+footer .copyright{font-size:.8rem;color:rgba(148,163,184,.5)}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:block}
+  section{padding:60px 0}
+  .hero-stats{gap:20px}
+  .hero-stat .num{font-size:1.5rem}
+  .pipeline{flex-direction:column;align-items:stretch}
+  .pipe-arrow{transform:rotate(90deg);text-align:center}
+  .card-grid{grid-template-columns:1fr}
+  .theorem-grid{grid-template-columns:1fr}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ═══════════ BADGE ═══════════ */
+.badge{
+  display:inline-block;
+  padding:3px 10px;border-radius:999px;
+  font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
+}
+.badge-green{background:rgba(34,211,154,.12);color:#22d39a}
+.badge-amber{background:rgba(251,191,36,.12);color:#fbbf24}
+.badge-red{background:rgba(248,113,113,.12);color:#f87171}
+
+/* ═══════════ GLOW DECORATIONS ═══════════ */
+.glow-tl{
+  position:absolute;top:-200px;left:-200px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(107,138,255,.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.glow-br{
+  position:absolute;bottom:-200px;right:-200px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(139,92,246,.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+/* ═══════════ COLLAPSE ═══════════ */
+details{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  margin-bottom:12px;
+}
+details summary{
+  padding:16px 20px;cursor:pointer;
+  font-weight:600;color:var(--text-bright);
+  list-style:none;display:flex;align-items:center;gap:10px;
+}
+details summary::before{
+  content:'▸';color:var(--accent);transition:transform .2s;
+}
+details[open] summary::before{transform:rotate(90deg)}
+details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAVIGATION ═══════════ -->
+<nav>
+  <div class="container">
+    <a href="#" class="nav-brand">
+      <img src="docs/images/logo-graph.jpg" alt="Logo">
+      <span>Graph Covariance</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#pipeline">Pipeline</a></li>
+      <li><a href="#replication">Replication</a></li>
+      <li><a href="#extensions">Extensions</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#theory">Theory</a></li>
+      <li><a href="#reproduce">Reproduce</a></li>
+    </ul>
+    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <img src="docs/images/logo-graph.jpg" alt="Graph Covariance Logo" class="hero-logo">
+    <h1>Graph <span>Covariance</span> Forecasting</h1>
+    <p class="subtitle">
+      Realized covariance replication · graph volatility spillovers · geometric spectral learning.
+      From synchronized intraday prices through graph-based HAR models to minimum-variance portfolio outcomes.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">27</div><div class="label">Stocks</div></div>
+      <div class="hero-stat"><div class="num">13</div><div class="label">Specifications</div></div>
+      <div class="hero-stat"><div class="num">1,066</div><div class="label">Forecast Origins</div></div>
+      <div class="hero-stat"><div class="num">9</div><div class="label">Interactive Figures</div></div>
+    </div>
+    <div class="btn-group">
+      <a href="https://github.com/khaamr/gnn-volatility-spillovers" class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        View Repository
+      </a>
+      <a href="#results" class="btn btn-outline">Explore Results</a>
+      <a href="https://doi.org/10.1093/jjfinec/nbae026" class="btn btn-outline">Original Paper</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+  </div>
+</section>
+
+<!-- ═══════════ OVERVIEW ═══════════ -->
+<section id="overview">
+  <div class="container" style="position:relative">
+    <div class="glow-tl"></div>
+    <div class="section-header">
+      <div class="tag">Overview</div>
+      <h2>The Research Question</h2>
+      <p>Can graph-based information from stock and stock-pair networks improve covariance forecasts — and do better forecasts produce lower-risk portfolios?</p>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <h3>Covariance Replication</h3>
+        <p>Reproduce HAR-Cholesky, HAR-DRD and 11 graph-enhanced specifications at 1, 5 and 22 retained sessions using public trade-bar data for the manuscript's 27 stocks.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3>Adaptive Shape Extension</h3>
+        <p>Combine three covariance experts with exponential weights under delayed feedback, maintaining positive definiteness and provable regret bounds on unit-trace shape loss.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h3>Geometric Spectral Gate</h3>
+        <p>A 175-parameter regime-dependent network that pools five geometric experts, applies learned eigenvalue cleaning and targets equal-priority accuracy and long-only portfolio risk.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:32px">
+      <span class="badge badge-amber">Public-Data Replication</span>
+      &nbsp;
+      <span class="badge badge-green">Reproducible</span>
+      &nbsp;
+      <span class="badge badge-red">Reused Benchmark — Not Confirmed</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PIPELINE ═══════════ -->
+<section id="pipeline">
+  <div class="container">
+    <div class="section-header">
+      <div class="tag">Method</div>
+      <h2>From Prices to Portfolio Outcomes</h2>
+      <p>The target contains each stock's variance and every pair's covariance. Daily univariate volatility series cannot supply that cross-asset information.</p>
+    </div>
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="step-num">Step 1</div>
+        <h4>Synchronized Prices</h4>
+        <p>27-stock minute bars from Syncster</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="step-num">Step 2</div>
+        <h4>5-min Returns</h4>
+        <p>Five offset grids, averaged</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="step-num">Step 3</div>
+        <h4>Realized Covariance</h4>
+        <p>Full 27 × 27 matrices</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="step-num">Step 4</div>
+        <h4>Graph Construction</h4>
+        <p>Stock + pair line graphs</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="step-num">Step 5</div>
+        <h4>HAR + GNN Forecasts</h4>
+        <p>13 reference specifications</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="step-num">Step 6</div>
+        <h4>Pooling &amp; Cleaning</h4>
+        <p>Adaptive weights + spectral guard</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="step-num">Step 7</div>
+        <h4>Portfolio &amp; Loss</h4>
+        <p>GMVP, GMVP+, MCS</p>
+      </div>
+    </div>
+
+    <div class="arch-img">
+      <img src="covariance_replication/docs/architecture.png" alt="Covariance Replication Architecture">
+    </div>
+    <p style="text-align:center;color:var(--text-dim);font-size:.85rem;margin-top:12px">
+      Original pipeline: variance forecasting uses empty, sector, complete or graphical-lasso stock graphs.
+      Correlation forecasting uses empty, complete or line graphs on stock pairs.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ REPLICATION ═══════════ -->
+<section id="replication">
+  <div class="container">
+    <div class="section-header">
+      <div class="tag">Replication</div>
+      <h2>Initial Public Backtest</h2>
+      <p>623 one-session forecasts during July 2022 – December 2024. The public experiment does not reproduce the original paper's full graph-model dominance.</p>
+    </div>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="value">−1.65%</div>
+        <div class="metric-label">Euclidean Improvement</div>
+        <div class="metric-sub">GHAR(GL,L) vs HAR-DRD, h=1</div>
+      </div>
+      <div class="metric">
+        <div class="value">−2.60%</div>
+        <div class="metric-label">Euclidean at h=5</div>
+        <div class="metric-sub">Strongest graph advantage</div>
+      </div>
+      <div class="metric">
+        <div class="value">+0.45%</div>
+        <div class="metric-label">Frobenius at h=22</div>
+        <div class="metric-sub">Graph model loses</div>
+      </div>
+      <div class="metric">
+        <div class="value">9.39%</div>
+        <div class="metric-label">Long-Only Risk</div>
+        <div class="metric-sub">vs 9.33% for HAR-DRD</div>
+      </div>
+    </div>
+
+    <div class="arch-img">
+      <img src="covariance_replication/docs/forecast-loss.png" alt="Relative Forecast Losses">
+    </div>
+
+    <div class="table-wrap" style="margin-top:32px">
+      <table>
+        <thead>
+          <tr>
+            <th>Metric for GHAR(GL,L)</th>
+            <th>Published Ratio</th>
+            <th>Public Ratio</th>
+            <th>Published MCS p</th>
+            <th>Public MCS p</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Euclidean</td>
+            <td>0.975</td>
+            <td>0.9835</td>
+            <td>1.000</td>
+            <td class="best">0.0023</td>
+          </tr>
+          <tr>
+            <td>Frobenius</td>
+            <td>0.975</td>
+            <td>0.9855</td>
+            <td>0.768</td>
+            <td class="best">0.0008</td>
+          </tr>
+          <tr>
+            <td>QLIKE</td>
+            <td>0.982</td>
+            <td>0.9851</td>
+            <td>1.000</td>
+            <td>0.5572</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="text-align:center;color:var(--text-dim);font-size:.85rem;margin-top:16px">
+      An adjusted MCS p-value below 0.05 means exclusion. The graph model is excluded for Euclidean and Frobenius loss. HAR-Cholesky is the best distance-loss model.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ EXTENSIONS ═══════════ -->
+<section id="extensions">
+  <div class="container" style="position:relative">
+    <div class="glow-br"></div>
+    <div class="section-header">
+      <div class="tag">Extensions</div>
+      <h2>Beyond Replication</h2>
+      <p>Two novel extensions that combine covariance experts adaptively — one through online learning on unit-trace shapes, the other through geometric pooling with spectral cleaning.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:32px">
+      <!-- Extension 1 -->
+      <div class="card" style="border-left:3px solid var(--accent)">
+        <h3>🔄 Adaptive Shape Mixture</h3>
+        <p style="margin-bottom:16px">
+          Three experts (HAR-DRD, GHAR(GL,L), HAR-Cholesky) contribute unit-trace covariance shapes.
+          Exponential weights update causally with delayed feedback. The common HAR-DRD trace provides total variance.
+        </p>
+        <div class="arch-img" style="margin:16px 0">
+          <img src="covariance_replication/docs/adaptive-architecture.png" alt="Adaptive Architecture">
+        </div>
+        <p><strong>Primary result:</strong> Confirmation 95% CI includes zero. Learning the mixture weights does not establish a statistically significant shape-loss improvement.</p>
+      </div>
+
+      <!-- Extension 2 -->
+      <div class="card" style="border-left:3px solid var(--accent2)">
+        <h3>🧠 Geometric Spectral Gate</h3>
+        <p style="margin-bottom:16px">
+          Five SPD experts pooled with a 175-parameter regime gate + learned eigenvalue cleaner.
+          Training optimizes equal-weight Frobenius distance and long-only portfolio return. Condition number capped at 100.
+        </p>
+        <div class="arch-img" style="margin:16px 0">
+          <img src="covariance_replication/docs/spectral-architecture.png" alt="Spectral Architecture">
+        </div>
+        <p><strong>Primary result:</strong> Frobenius −1.79% vs HAR-DRD. Risk interval includes zero. The joint accuracy-and-risk criterion is <strong>not passed</strong>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ RESULTS ═══════════ -->
+<section id="results">
+  <div class="container">
+    <div class="section-header">
+      <div class="tag">Results</div>
+      <h2>Comprehensive Benchmark Comparison</h2>
+      <p>All models evaluated on the same 443 one-session origins in the 2025–October 2026 reused benchmark. No universal best model exists across all objectives.</p>
+    </div>
+
+    <!-- Main Results Table -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Euclidean Ratio</th>
+            <th>Frobenius Ratio</th>
+            <th>QLIKE Ratio</th>
+            <th>Annual Risk (%)</th>
+            <th>Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>HAR-DRD</td>
+            <td>1.0000</td>
+            <td>1.0000</td>
+            <td>1.0000</td>
+            <td>9.4351</td>
+            <td><span class="badge badge-amber">Reference</span></td>
+          </tr>
+          <tr>
+            <td>GHAR(GL,L)</td>
+            <td>1.0113</td>
+            <td>1.0109</td>
+            <td>1.1609</td>
+            <td>9.7468</td>
+            <td><span class="badge badge-red">Worse</span></td>
+          </tr>
+          <tr>
+            <td>HAR-Cholesky</td>
+            <td>1.0137</td>
+            <td>1.0062</td>
+            <td>1.0764</td>
+            <td>9.4047</td>
+            <td><span class="badge badge-green">Best Risk</span></td>
+          </tr>
+          <tr>
+            <td>Uniform Shape</td>
+            <td>0.9982</td>
+            <td>0.9987</td>
+            <td>0.9926</td>
+            <td>9.4664</td>
+            <td><span class="badge badge-green">Strong</span></td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>Adaptive Shape</strong></td>
+            <td>0.9977</td>
+            <td>0.9979</td>
+            <td class="best">0.9918</td>
+            <td>9.4912</td>
+            <td><span class="badge badge-amber">Mixed</span></td>
+          </tr>
+          <tr>
+            <td>Arithmetic HAR Cov</td>
+            <td>1.0827</td>
+            <td>1.0906</td>
+            <td>1.0158</td>
+            <td class="best">9.2113</td>
+            <td><span class="badge badge-amber">Best Risk, Worst Loss</span></td>
+          </tr>
+          <tr>
+            <td>Log-Euclidean HAR Cov</td>
+            <td>0.9860</td>
+            <td>0.9808</td>
+            <td>1.0897</td>
+            <td>9.4763</td>
+            <td><span class="badge badge-green">Strong Loss</span></td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>Static Geometric Pool</strong></td>
+            <td class="best">0.9766</td>
+            <td class="best">0.9740</td>
+            <td>0.9999</td>
+            <td>9.4587</td>
+            <td><span class="badge badge-green">Best Loss</span></td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>Geometric Spectral Gate</strong></td>
+            <td>0.9839</td>
+            <td>0.9821</td>
+            <td>0.9961</td>
+            <td>9.4061</td>
+            <td><span class="badge badge-amber">Joint Fail</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="text-align:center;color:var(--text-dim);font-size:.85rem;margin-top:16px">
+      Ratios use HAR-DRD as denominator — lower is better. Risk is annualized long-only standard deviation before transaction costs.
+    </p>
+
+    <!-- Uncertainty Table -->
+    <h3 style="color:var(--text-bright);margin:48px 0 20px;text-align:center">Paired Uncertainty Intervals — Geometric Spectral Gate</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Reference</th>
+            <th>Frobenius Δ (%)</th>
+            <th>95% CI</th>
+            <th>Variance Δ (%)</th>
+            <th>95% CI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>HAR-DRD</td>
+            <td class="best">−1.789</td>
+            <td>[−2.822, −0.661]</td>
+            <td>−0.613</td>
+            <td>[−2.149, +0.951]</td>
+          </tr>
+          <tr>
+            <td>Adaptive Shape</td>
+            <td class="best">−1.580</td>
+            <td>[−3.114, −0.189]</td>
+            <td>−1.784</td>
+            <td>[−3.620, +0.926]</td>
+          </tr>
+          <tr>
+            <td>Uniform Shape</td>
+            <td class="best">−1.664</td>
+            <td>[−3.298, −0.208]</td>
+            <td>−1.269</td>
+            <td>[−2.650, +0.912]</td>
+          </tr>
+          <tr>
+            <td>Static Pool</td>
+            <td>+0.833</td>
+            <td>[−0.130, +2.191]</td>
+            <td>−1.109</td>
+            <td>[−2.159, +0.297]</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="text-align:center;color:var(--text-dim);font-size:.85rem;margin-top:16px">
+      The joint rule requires <strong>both</strong> intervals below zero. The risk interval against HAR-DRD includes zero → candidate <strong>fails</strong>.
+    </p>
+
+    <!-- Key Insight Cards -->
+    <div class="card-grid" style="margin-top:48px">
+      <div class="card">
+        <h3>📊 Accuracy vs Risk Trade-off</h3>
+        <p>The static pool has the lowest matrix-distance losses (7-parameter model). The arithmetic pool has the lowest risk but substantially higher matrix losses. No single model dominates all objectives — this is a fundamental feature, not a bug.</p>
+      </div>
+      <div class="card">
+        <h3>🔬 Development → Confirmation Drift</h3>
+        <p>Development favored the graph model over HAR-DRD. That ranking <strong>reverses</strong> in confirmation. A fixed uniform combination already captures most of the adaptive mixture's value. This pattern warns against evaluating only in-sample results.</p>
+      </div>
+      <div class="card">
+        <h3>⚡ Conditioning Stability</h3>
+        <p>The raw GHAR(GL,L) forecast reaches condition number 127,174 — the adaptive mixture caps at 223 (570× reduction). The spectral gate guarantees κ ≤ 100 by construction, with worst-case gross leverage bounded by √100 = 10.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ THEORY ═══════════ -->
+<section id="theory">
+  <div class="container">
+    <div class="section-header">
+      <div class="tag">Theory</div>
+      <h2>Mathematical Guarantees</h2>
+      <p>Proved specializations of established graph-spectral and online-learning ideas, plus a project-specific counterexample. Priority is unassessed.</p>
+    </div>
+
+    <div class="theorem-grid">
+      <div class="theorem-box">
+        <div class="theorem-label">Lemma 1</div>
+        <h4>Line-Graph Spectral Contraction</h4>
+        <p>One aggregation pass contracts centered pair features by at most <strong>ρ₂₇ = 0.46</strong>. Three passes reduce centered variation by 90.3%. Aggregation runs in O(n²d) via the incidence factorization.</p>
+      </div>
+      <div class="theorem-box">
+        <div class="theorem-label">Proposition 2</div>
+        <h4>Loss–Risk Counterexample</h4>
+        <p>All three covariance losses (Euclidean, Frobenius, QLIKE) can improve while true GMVP variance <strong>increases</strong> from 0.800 to 0.8125. Matrix accuracy ≠ allocation quality.</p>
+      </div>
+      <div class="theorem-box">
+        <div class="theorem-label">Lemma 3</div>
+        <h4>Relative Spectral Risk Bound</h4>
+        <p>A relative spectral approximation (1−δ)H ⪯ S ⪯ (1+δ)H yields portfolio risk inflation at most (1+δ)/(1−δ). At δ = 0.05, the bound is +10.5%.</p>
+      </div>
+      <div class="theorem-box">
+        <div class="theorem-label">Lemma 4</div>
+        <h4>Positive Shape Mixing</h4>
+        <p>Trace-one expert mixtures preserve positive definiteness and the selected total variance. The shape loss is convex under the mixture, enabling regret analysis.</p>
+      </div>
+      <div class="theorem-box">
+        <div class="theorem-label">Theorem 5</div>
+        <h4>Delayed Online Regret</h4>
+        <p>Finite-sequence shape-loss regret bounds including feedback delay. The <strong>one-session bound is 2 log 3 ≈ 2.197</strong>, constant regardless of sequence length.</p>
+      </div>
+      <div class="theorem-box">
+        <div class="theorem-label">Spectral Guard</div>
+        <h4>Condition Number Guarantee</h4>
+        <p>The geometric spectral construction bounds the output condition number by <strong>100</strong> under its positive-input assumptions. Gross leverage ≤ 10 follows.</p>
+      </div>
+    </div>
+
+    <div class="arch-img" style="margin-top:48px">
+      <img src="covariance_replication/docs/guarantee-map.png" alt="Guarantee Map">
+    </div>
+    <p style="text-align:center;color:var(--text-dim);font-size:.85rem;margin-top:12px">
+      Relationship between mathematical guarantees. Conditional guarantees do not imply lower future portfolio risk.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ TIMELINE ═══════════ -->
+<section id="timeline" style="background:var(--bg-dark)">
+  <div class="container">
+    <div class="section-header">
+      <div class="tag">Timeline</div>
+      <h2>Experiment Periods</h2>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="date">2016 – June 2022</div>
+        <h4>Calibration Window</h4>
+        <p>1,000-observation rolling calibration from public Syncster trade bars. Spans more than six calendar years due to strict shared-session screening.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">July 2022 – December 2024</div>
+        <h4>Development Period</h4>
+        <p>623 one-session forecast origins. Method, experts and learning rate fixed after inspecting development results. Graph model favored on short horizons.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">January 2025 – October 2026</div>
+        <h4>Confirmation / Reused Benchmark</h4>
+        <p>443 one-session origins. Confirmation intervals include zero. The geometric spectral architecture was developed after inspecting this window — it is a reused benchmark.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">Future</div>
+        <h4>Fresh Confirmation Needed</h4>
+        <p>Fresh dates or an independently specified universe are required to assess confirmation after the spectral architecture search.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ REPRODUCE ═══════════ -->
+<section id="reproduce">
+  <div class="container">
+    <div class="section-header">
+      <div class="tag">Reproducibility</div>
+      <h2>Reproduce the Study</h2>
+      <p>Use Python 3.10 or 3.11. The first run caches approximately 0.5 GB of pinned public minute bars.</p>
+    </div>
+
+    <div class="card" style="max-width:700px;margin:0 auto">
+      <pre style="background:rgba(0,0,0,.3);padding:20px;border-radius:8px;overflow-x:auto;color:var(--accent3);font-size:.88rem;line-height:1.8"><code>git clone https://github.com/khaamr/gnn-volatility-spillovers.git
+cd gnn-volatility-spillovers/covariance_replication
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m ipykernel install --user --name covariance-har
+python -m unittest discover -s tests -v</code></pre>
+    </div>
+
+    <div class="card-grid" style="margin-top:32px">
+      <div class="card">
+        <h3>📓 Notebooks</h3>
+        <p>
+          <a href="covariance_replication/Covariance_Replication.ipynb">Covariance Replication</a><br>
+          <a href="covariance_replication/Extended_Covariance.ipynb">Adaptive Shape Extension</a><br>
+          <a href="covariance_replication/Spectral_Covariance.ipynb">Geometric Spectral Extension</a>
+        </p>
+      </div>
+      <div class="card">
+        <h3>📊 Data & Figures</h3>
+        <p>
+          <a href="https://huggingface.co/datasets/syncster-data/historical-market-data/tree/eff0dac55d843b3b83caec819efa213021a3e3e5">Pinned Public Data</a><br>
+          <a href="research_dashboard.html">Interactive Figure Gallery</a><br>
+          <a href="figures/README.md">Figure Inventory</a>
+        </p>
+      </div>
+      <div class="card">
+        <h3>📋 Documentation</h3>
+        <p>
+          <a href="covariance_replication/docs/theory.md">Mathematical Proofs</a><br>
+          <a href="covariance_replication/docs/protocol-audit.md">Protocol Audit</a><br>
+          <a href="covariance_replication/docs/result-comparison.md">Paper vs Public Comparison</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Limitations -->
+    <details style="margin-top:32px">
+      <summary>Data and Limitations</summary>
+      <div class="details-body">
+        <ul style="margin-top:12px;padding-left:20px">
+          <li><strong>Public inputs:</strong> Pinned Syncster minute trade bars for the manuscript's 27 stocks and SPY.</li>
+          <li><strong>Original inputs:</strong> Licensed LOBSTER quotes, supported through the documented local-data adapter.</li>
+          <li><strong>Calendar:</strong> Strict shared-session screening removes dates, especially before 2022.</li>
+          <li><strong>Calibration:</strong> The initial 1,000-observation window spans more than six calendar years.</li>
+          <li><strong>Evaluation:</strong> Portfolio returns are open-to-close and exclude transaction costs. The spectral benchmark is reused.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="https://github.com/khaamr/gnn-volatility-spillovers">GitHub</a>
+      <a href="https://doi.org/10.1093/jjfinec/nbae026">Original Paper</a>
+      <a href="https://github.com/chaozhang-ox/Graph-based-HAR">Upstream Reference</a>
+      <a href="covariance_replication/docs/theory.md">Proofs</a>
+      <a href="research_dashboard.html">Figures</a>
+    </div>
+    <p class="copyright">
+      Based on Zhang, Pu, Cucuringu & Dong · Journal of Financial Econometrics · Public-data replication and extensions
+    </p>
+  </div>
+</footer>
+
+<!-- ═══════════ SCROLL SPY ═══════════ -->
+<script>
+document.addEventListener('scroll',()=>{
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav-links a');
+  let current = '';
+  sections.forEach(s=>{
+    if(window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  links.forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('href')==='#'+current);
+  });
+});
+</script>
+</body>
+</html>
