@@ -1,0 +1,33 @@
+{
+  "method": "exponential-weights mixture of unit-trace covariance shapes",
+  "experts": [
+    "HAR-DRD",
+    "GHAR(GL,L)",
+    "HAR-Cholesky"
+  ],
+  "trace_forecast": "HAR-DRD",
+  "learning_rate": 0.5,
+  "horizons_in_retained_sessions": [
+    1,
+    5,
+    22
+  ],
+  "feedback": "target is scored only after its last retained session has completed",
+  "development_period": [
+    "2022-07-01",
+    "2024-12-31"
+  ],
+  "confirmation_period": [
+    "2025-01-01",
+    "2026-10-23"
+  ],
+  "primary_confirmation_comparison": "adaptive versus uniform mixture under normalized covariance-shape loss",
+  "additional_comparisons": [
+    "matrix losses",
+    "MCS",
+    "one-session GMVP and GMVP+ risk",
+    "turnover"
+  ],
+  "qualification": "method selected after examining the development replication; confirmation outcomes not used to select experts or learning rate",
+  "primary_confirmation_horizon": 1
+}
