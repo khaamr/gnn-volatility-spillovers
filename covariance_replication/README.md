@@ -2,7 +2,7 @@
 
 a replication of the graph-based har covariance study. the target is a full covariance matrix, including the co-movement of every pair of stocks.
 
-[website files](../index.html) · [executed notebook](Covariance_Replication.ipynb) · [protocol audit](docs/protocol-audit.md) · [journal article](https://doi.org/10.1093/jjfinec/nbae026) · [authors' code](https://github.com/chaozhang-ox/Graph-based-HAR/tree/751f8f0b400a33e2f2fd01501ffdc42a2315f013)
+[live website](https://khaamr.github.io/graph-covariance-forecasting/) · [executed notebook](Covariance_Replication.ipynb) · [protocol audit](docs/protocol-audit.md) · [journal article](https://doi.org/10.1093/jjfinec/nbae026) · [authors' code](https://github.com/chaozhang-ox/Graph-based-HAR/tree/751f8f0b400a33e2f2fd01501ffdc42a2315f013)
 
 ![architecture showing intraday prices, the stock and pair graphs, covariance forecasts, and evaluation](docs/architecture.png)
 

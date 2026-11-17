@@ -1,0 +1,43 @@
+name: publish website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - research_dashboard.html
+      - docs/images/**
+      - covariance_replication/docs/**
+      - .github/workflows/pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: prepare website
+        run: |
+          mkdir -p _site/docs _site/covariance_replication/docs
+          cp index.html research_dashboard.html _site/
+          cp -R docs/images _site/docs/
+          find covariance_replication/docs -maxdepth 1 -type f \( -name '*.png' -o -name '*.svg' \) -exec cp {} _site/covariance_replication/docs/ \;
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4
