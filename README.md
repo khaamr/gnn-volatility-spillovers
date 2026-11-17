@@ -14,7 +14,7 @@
 
 forecast the full matrix of asset co-movements, then test whether improved covariance estimates produce lower-risk portfolios. this project follows that question from synchronized intraday prices through graph-based har models, adaptive covariance shapes and a geometric spectral extension.
 
-based on **_graph-based methods for forecasting realized covariances_**. [journal article](https://doi.org/10.1093/jjfinec/nbae026) · [upstream reference implementation](https://github.com/chaozhang-ox/Graph-based-HAR/tree/751f8f0b400a33e2f2fd01501ffdc42a2315f013)
+based on **_graph-based methods for forecasting realized covariances_** by Zhang, Pu, Cucuringu and Dong. [journal article](https://doi.org/10.1093/jjfinec/nbae026) · [upstream reference implementation](https://github.com/chaozhang-ox/Graph-based-HAR/tree/751f8f0b400a33e2f2fd01501ffdc42a2315f013)
 
 > **research scope:** this is a public-data method replication and extension. the original licensed lobster quote panel is unavailable. the feed, dates and retained calendar differ, and the public experiment does not reproduce the paper's full model ranking or portfolio advantage.
 
@@ -144,4 +144,3 @@ python export_figures.py
 
 [pinned public data](https://huggingface.co/datasets/syncster-data/historical-market-data/tree/eff0dac55d843b3b83caec819efa213021a3e3e5) · [data and protocol audit](covariance_replication/docs/protocol-audit.md)
 
-the earlier volatility-only study remains available in the [legacy notebook](GNNHAR_Replication.ipynb) and [its notes](docs/README.md). the three covariance notebooks above concern the article specified for the current replication.
