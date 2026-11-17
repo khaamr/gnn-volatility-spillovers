@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="814" viewBox="0 0 1200 814" role="img" aria-labelledby="title"><title id="title">Mathematical results for covariance forecasting</title>
+<defs><marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L11 6L0 12z" fill="#76948e"/></marker></defs>
+<g font-family="Helvetica, Arial, sans-serif">
+<rect x="0" y="0" width="1200" height="814" rx="0" fill="#f4f7f5" stroke="none" stroke-width="1.5"/>
+<rect x="0" y="0" width="1200" height="158" rx="0" fill="#142e34" stroke="none" stroke-width="1.5"/>
+<text x="48" y="42" fill="#9ce0c7" font-size="18" font-weight="700" text-anchor="start">proofs and interpretation</text>
+<text x="46" y="96" fill="#fff" font-size="45" font-weight="700" text-anchor="start">what the extension establishes</text>
+<text x="48" y="133" fill="#c3d9d8" font-size="21" font-weight="400" text-anchor="start">exact statements about graph smoothing, portfolio risk and online shape forecasts</text>
+<rect x="48" y="190" width="1104" height="165" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<rect x="48" y="385" width="1104" height="165" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<rect x="48" y="580" width="1104" height="165" rx="14" fill="#fff" stroke="#dbe6e0" stroke-width="1.5"/>
+<text x="72" y="230" fill="#183239" font-size="27" font-weight="700" text-anchor="start">line-graph contraction</text>
+<text x="72" y="265" fill="#526970" font-size="22" font-weight="400" text-anchor="start">27 stocks → 351 correlation pairs</text>
+<text x="72" y="298" fill="#526970" font-size="22" font-weight="400" text-anchor="start">each pass contracts centered features</text>
+<text x="997" y="257" fill="#0f7166" font-size="44" font-weight="700" text-anchor="middle">≤ 0.46</text>
+<text x="997" y="292" fill="#526970" font-size="18" font-weight="400" text-anchor="middle">of their previous norm</text>
+<text x="72" y="425" fill="#183239" font-size="27" font-weight="700" text-anchor="start">smaller matrix loss can mean higher risk</text>
+<text x="72" y="461" fill="#526970" font-size="22" font-weight="400" text-anchor="start">all three forecast losses improve in the explicit two-stock example</text>
+<text x="72" y="497" fill="#526970" font-size="21" font-weight="400" text-anchor="start">true portfolio variance</text>
+<text x="500" y="501" fill="#a84932" font-size="28" font-weight="700" text-anchor="start">0.8000  →  0.8125</text>
+<text x="72" y="620" fill="#183239" font-size="27" font-weight="700" text-anchor="start">bounded regret for one-session shape mixing</text>
+<text x="72" y="657" fill="#526970" font-size="22" font-weight="400" text-anchor="start">three experts; learning rate 0.5; updates after observed targets</text>
+<text x="72" y="694" fill="#526970" font-size="21" font-weight="400" text-anchor="start">excess cumulative shape loss versus the best fixed expert</text>
+<text x="997" y="672" fill="#0f7166" font-size="34" font-weight="700" text-anchor="middle">≤ 2 log 3</text>
+<text x="997" y="705" fill="#526970" font-size="22" font-weight="400" text-anchor="middle">≈ 2.1972</text>
+<text x="48" y="784" fill="#526970" font-size="20" font-weight="400" text-anchor="start">proofs are conditional mathematical results; portfolio gains require their own empirical test</text>
+</g></svg>
