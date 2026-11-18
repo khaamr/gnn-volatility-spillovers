@@ -92,7 +92,7 @@ footer{max-width:1180px;margin:32px auto;padding:0 24px 40px;color:#5b6d88;font-
 <h1>graph covariance forecasting</h1>
 <p>nine figures from the executed covariance notebooks. explore the replication,
 adaptive covariance shapes and geometric spectral extension without downloading
-market data or rerunning the models.</p><nav>""" + links + """</nav></header>
+market data or rerunning the models.</p><nav><a href="previews/graph-explainer.html">animated graph explanation ↗</a>""" + links + """</nav></header>
 <main><p class="notice">these are stored experimental outputs. the newer extension
 uses a reused 2025–2026 benchmark. its risk interval includes zero; a definite joint
 accuracy and portfolio-risk improvement is not established.</p>""" + "".join(cards) + """
