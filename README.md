@@ -4,7 +4,7 @@
 
 **realized covariance replication · graph spillovers · geometric spectral learning**
 
-[live website](https://khaamr.github.io/graph-covariance-forecasting/) · [replication](covariance_replication/Covariance_Replication.ipynb) · [shape extension](covariance_replication/Extended_Covariance.ipynb) · [spectral extension](covariance_replication/Spectral_Covariance.ipynb) · [interactive figures](research_dashboard.html) · [proofs](covariance_replication/docs/theory.md)
+[live website](https://khaamr.github.io/graph-covariance-forecasting/) · [replication](covariance_replication/Covariance_Replication.ipynb) · [shape extension](covariance_replication/Extended_Covariance.ipynb) · [spectral extension](covariance_replication/Spectral_Covariance.ipynb) · [interactive figures](https://khaamr.github.io/graph-covariance-forecasting/research_dashboard.html) · [proofs](covariance_replication/docs/theory.md)
 
 **27 stocks &nbsp; / &nbsp; 13 reference specifications &nbsp; / &nbsp; 3 horizons &nbsp; / &nbsp; 9 interactive figures**
 
@@ -26,7 +26,7 @@ based on **_graph-based methods for forecasting realized covariances_** by Zhang
 | [covariance replication](covariance_replication/Covariance_Replication.ipynb) | har-cholesky, har-drd and graph specifications at 1, 5 and 22 retained sessions |
 | [adaptive shape extension](covariance_replication/Extended_Covariance.ipynb) | delayed-feedback expert mixing, unit-trace covariance shapes and portfolio checks |
 | [geometric spectral extension](covariance_replication/Spectral_Covariance.ipynb) | regime-dependent pooling, learned eigenvalue cleaning and equal accuracy/risk objectives |
-| [offline interactive gallery](research_dashboard.html) | all nine saved plotly figures; download and open the html for interactivity |
+| [live interactive gallery](https://khaamr.github.io/graph-covariance-forecasting/research_dashboard.html) | all nine saved plotly figures; open directly in your browser |
 | [mathematical proofs](covariance_replication/docs/theory.md) | graph contraction, a loss–risk counterexample, conditional risk and regret bounds |
 | [protocol audit](covariance_replication/docs/protocol-audit.md) | the original method, implementation choices, calendar differences and limitations |
 
@@ -113,7 +113,7 @@ these are proved specializations of established mathematical ideas. priority is 
 
 ## graphs, presentation and site preparation
 
-all saved covariance graphs are available in the [offline gallery](research_dashboard.html), with individual [figure payloads](figures) and a source-notebook index. open the downloaded html locally; the plotly library is bundled, so market downloads and a live server are unnecessary.
+all saved covariance graphs are available in the [live interactive gallery](https://khaamr.github.io/graph-covariance-forecasting/research_dashboard.html), with individual [figure payloads](figures) and a source-notebook index. the [downloadable html](research_dashboard.html) also opens locally with its bundled plotly library. GitHub’s file viewer displays the html source; use the live gallery link for interactive charts.
 
 - [figure inventory](figures/README.md): where each graph comes from and how to regenerate the gallery.
 - [presentation content plan](docs/presentation-plan.md): a slide sequence with the exact source figures, tables and supported claims.
