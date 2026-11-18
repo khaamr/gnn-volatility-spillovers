@@ -8,6 +8,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- KaTeX for math rendering -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]})"></script>
 <style>
 /* ═══════════ RESET & BASE ═══════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -109,9 +114,7 @@ section:nth-child(even){background:var(--bg-card-alt)}
   flex-wrap:wrap;
   margin-bottom:40px;
 }
-.hero-stat{
-  text-align:center;
-}
+.hero-stat{text-align:center}
 .hero-stat .num{
   font-size:2rem;font-weight:700;
   background:linear-gradient(135deg,var(--accent),var(--accent3));
@@ -119,7 +122,7 @@ section:nth-child(even){background:var(--bg-card-alt)}
   background-clip:text;
 }
 .hero-stat .label{
-  font-size:.82rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;
+  font-size:.78rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;
 }
 .btn-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .btn{
@@ -133,21 +136,9 @@ section:nth-child(even){background:var(--bg-card-alt)}
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   color:#fff;
 }
-.btn-primary:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 30px rgba(107,138,255,.35);
-  color:#fff;
-}
-.btn-outline{
-  border-color:var(--border);
-  color:var(--text);
-  background:rgba(255,255,255,.04);
-}
-.btn-outline:hover{
-  border-color:var(--accent);
-  background:rgba(107,138,255,.08);
-  color:var(--accent);
-}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(107,138,255,.35);color:#fff}
+.btn-outline{border-color:var(--border);color:var(--text);background:rgba(255,255,255,.04)}
+.btn-outline:hover{border-color:var(--accent);background:rgba(107,138,255,.08);color:var(--accent)}
 .scroll-indicator{
   position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
   z-index:2;animation:bounce 2s infinite;
@@ -160,21 +151,13 @@ section:nth-child(even){background:var(--bg-card-alt)}
 
 /* ═══════════ NAV ═══════════ */
 nav{
-  position:fixed;top:0;left:0;right:0;
-  z-index:100;
+  position:fixed;top:0;left:0;right:0;z-index:100;
   backdrop-filter:blur(20px);
   background:rgba(10,14,26,.8);
   border-bottom:1px solid var(--border);
-  transition:all .3s;
 }
-nav .container{
-  display:flex;align-items:center;justify-content:space-between;
-  padding-top:14px;padding-bottom:14px;
-}
-.nav-brand{
-  display:flex;align-items:center;gap:10px;
-  font-weight:600;font-size:1.05rem;color:var(--text-bright);
-}
+nav .container{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px}
+.nav-brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:1.05rem;color:var(--text-bright)}
 .nav-brand img{width:32px;height:32px;border-radius:8px}
 .nav-links{display:flex;gap:28px;list-style:none}
 .nav-links a{color:var(--text-dim);font-size:.88rem;font-weight:500;transition:color .2s}
@@ -185,203 +168,134 @@ nav .container{
 /* ═══════════ SECTION HEADER ═══════════ */
 .section-header{text-align:center;margin-bottom:64px}
 .section-header .tag{
-  display:inline-block;
-  font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;
+  display:inline-block;font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;
   color:var(--accent);font-weight:600;
-  margin-bottom:12px;
-  background:rgba(107,138,255,.1);
-  padding:6px 16px;border-radius:999px;
+  margin-bottom:12px;background:rgba(107,138,255,.1);padding:6px 16px;border-radius:999px;
 }
-.section-header h2{
-  font-size:clamp(1.6rem,3.5vw,2.4rem);
-  font-weight:700;color:var(--text-bright);
-  margin-bottom:16px;
-}
-.section-header p{
-  color:var(--text-dim);max-width:640px;margin:0 auto;font-size:1.05rem;
-}
+.section-header h2{font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:700;color:var(--text-bright);margin-bottom:16px}
+.section-header p{color:var(--text-dim);max-width:640px;margin:0 auto;font-size:1.05rem}
 
 /* ═══════════ CARDS ═══════════ */
-.card-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:24px;
-}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
 .card{
-  background:var(--bg-card);
-  border:1px solid var(--border);
-  border-radius:var(--radius-lg);
-  padding:32px;
-  transition:all .3s;
-  position:relative;
-  overflow:hidden;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:32px;transition:all .3s;position:relative;overflow:hidden;
 }
 .card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,var(--accent),var(--accent2));
-  opacity:0;transition:opacity .3s;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:0;transition:opacity .3s;
 }
-.card:hover{
-  border-color:var(--border-glow);
-  transform:translateY(-4px);
-  box-shadow:var(--shadow-card);
-}
+.card:hover{border-color:var(--border-glow);transform:translateY(-4px);box-shadow:var(--shadow-card)}
 .card:hover::before{opacity:1}
 .card-icon{
-  width:48px;height:48px;
-  border-radius:12px;
-  background:rgba(107,138,255,.1);
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:20px;
+  width:48px;height:48px;border-radius:12px;background:rgba(107,138,255,.1);
+  display:flex;align-items:center;justify-content:center;margin-bottom:20px;
 }
 .card-icon svg{width:24px;height:24px;stroke:var(--accent)}
 .card h3{font-size:1.15rem;font-weight:600;color:var(--text-bright);margin-bottom:10px}
 .card p{color:var(--text-dim);font-size:.92rem;line-height:1.65}
 
 /* ═══════════ RESULTS TABLE ═══════════ */
-.table-wrap{
-  overflow-x:auto;
-  border-radius:var(--radius-lg);
-  border:1px solid var(--border);
-  background:var(--bg-card);
-  box-shadow:var(--shadow-card);
-}
+.table-wrap{overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--border);background:var(--bg-card);box-shadow:var(--shadow-card)}
 table{width:100%;border-collapse:collapse;font-size:.88rem}
 thead{background:rgba(107,138,255,.06)}
-th{
-  padding:14px 18px;text-align:left;
-  font-weight:600;color:var(--accent);
-  font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;
-  border-bottom:1px solid var(--border);
-  white-space:nowrap;
-}
-td{
-  padding:12px 18px;border-bottom:1px solid rgba(30,41,59,.5);
-  white-space:nowrap;
-}
+th{padding:14px 18px;text-align:left;font-weight:600;color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:12px 18px;border-bottom:1px solid rgba(30,41,59,.5);white-space:nowrap}
 tr:last-child td{border-bottom:none}
 tr:hover{background:rgba(107,138,255,.04)}
 .best{color:var(--accent3);font-weight:600}
 .highlight-row{background:rgba(107,138,255,.06) !important}
 
-/* ═══════════ PIPELINE ═══════════ */
-.pipeline{
-  display:flex;
-  align-items:center;
-  gap:0;
-  overflow-x:auto;
-  padding:40px 0;
-  justify-content:center;
-  flex-wrap:wrap;
+/* ═══════════ ALGORITHM STEPS ═══════════ */
+.algo-container{position:relative;max-width:900px;margin:0 auto}
+.algo-line{
+  position:absolute;left:28px;top:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom,var(--accent),var(--accent2),var(--accent3));
 }
-.pipe-step{
-  background:var(--bg-card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:20px 24px;
-  text-align:center;
-  min-width:160px;
-  transition:all .3s;
+.algo-step{
+  position:relative;padding-left:72px;margin-bottom:48px;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s ease,transform .6s ease;
 }
-.pipe-step:hover{
-  border-color:var(--accent);
-  box-shadow:0 0 24px rgba(107,138,255,.15);
+.algo-step.visible{opacity:1;transform:translateY(0)}
+.algo-step:last-child{margin-bottom:0}
+.algo-num{
+  position:absolute;left:8px;top:0;
+  width:40px;height:40px;border-radius:50%;
+  background:var(--bg-card);border:2px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.85rem;color:var(--accent);
+  z-index:1;transition:all .3s;
 }
-.pipe-step .step-num{
-  font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;
-  color:var(--accent);font-weight:600;margin-bottom:6px;
+.algo-step:hover .algo-num{
+  background:var(--accent);color:var(--bg-dark);
+  box-shadow:0 0 20px rgba(107,138,255,.4);
 }
-.pipe-step h4{font-size:.9rem;color:var(--text-bright);font-weight:600;margin-bottom:4px}
-.pipe-step p{font-size:.78rem;color:var(--text-dim)}
-.pipe-arrow{
-  color:var(--accent);font-size:1.5rem;padding:0 8px;
-  flex-shrink:0;
+.algo-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px 32px;transition:all .3s;
+}
+.algo-step:hover .algo-card{border-color:var(--border-glow);box-shadow:var(--shadow-card)}
+.algo-card .algo-title{font-size:1.05rem;font-weight:600;color:var(--text-bright);margin-bottom:8px}
+.algo-card .algo-desc{font-size:.9rem;color:var(--text-dim);line-height:1.65;margin-bottom:12px}
+.algo-card .algo-math{
+  background:rgba(0,0,0,.3);border:1px solid rgba(107,138,255,.1);
+  border-radius:8px;padding:16px 20px;font-size:.88rem;
+  color:var(--text);overflow-x:auto;
+}
+.algo-card .algo-detail{
+  margin-top:12px;font-size:.82rem;color:var(--text-dim);
+  border-left:2px solid var(--accent);padding-left:12px;
+}
+.algo-card .algo-output{
+  margin-top:12px;display:inline-block;
+  background:rgba(107,138,255,.08);border:1px solid rgba(107,138,255,.15);
+  border-radius:6px;padding:4px 12px;font-size:.78rem;
+  color:var(--accent);font-weight:500;text-transform:uppercase;letter-spacing:.06em;
 }
 
 /* ═══════════ THEOREM BOXES ═══════════ */
 .theorem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
 .theorem-box{
-  background:var(--bg-card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:28px;
-  border-left:3px solid var(--accent);
-  transition:all .3s;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;border-left:3px solid var(--accent);transition:all .3s;
 }
-.theorem-box:hover{
-  border-left-color:var(--accent2);
-  box-shadow:var(--shadow-card);
-}
-.theorem-box .theorem-label{
-  font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;
-  color:var(--accent2);font-weight:600;margin-bottom:8px;
-}
+.theorem-box:hover{border-left-color:var(--accent2);box-shadow:var(--shadow-card)}
+.theorem-box .theorem-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2);font-weight:600;margin-bottom:8px}
 .theorem-box h4{font-size:1rem;color:var(--text-bright);font-weight:600;margin-bottom:8px}
 .theorem-box p{font-size:.88rem;color:var(--text-dim);line-height:1.6}
 
 /* ═══════════ METRICS ROW ═══════════ */
-.metrics{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:20px;
-  margin:40px 0;
-}
-.metric{
-  background:var(--bg-card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:24px;
-  text-align:center;
-}
-.metric .value{
-  font-size:2rem;font-weight:700;
-  background:linear-gradient(135deg,var(--accent),var(--accent3));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-.metric .metric-label{
-  font-size:.82rem;color:var(--text-dim);margin-top:6px;
-}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin:40px 0}
+.metric{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center}
+.metric .value{font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.metric .metric-label{font-size:.82rem;color:var(--text-dim);margin-top:6px}
 .metric .metric-sub{font-size:.72rem;color:var(--text-dim);margin-top:2px}
 
 /* ═══════════ ARCHITECTURE IMG ═══════════ */
-.arch-img{
-  border-radius:var(--radius-lg);
-  border:1px solid var(--border);
-  overflow:hidden;
-  margin:32px auto;
-  max-width:800px;
-  box-shadow:var(--shadow-card);
-}
+.arch-img{border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;margin:32px auto;max-width:800px;box-shadow:var(--shadow-card)}
 .arch-img img{width:100%;display:block}
 
-/* ═══════════ TIMELINE ═══════════ */
-.timeline{position:relative;padding-left:32px;margin:40px 0}
-.timeline::before{
-  content:'';position:absolute;left:12px;top:0;bottom:0;
-  width:2px;background:linear-gradient(to bottom,var(--accent),var(--accent2));
-}
-.timeline-item{position:relative;margin-bottom:32px}
-.timeline-item::before{
-  content:'';position:absolute;left:-26px;top:6px;
-  width:12px;height:12px;border-radius:50%;
-  background:var(--accent);
-  box-shadow:0 0 12px rgba(107,138,255,.4);
-}
-.timeline-item h4{color:var(--text-bright);font-weight:600;font-size:1rem;margin-bottom:4px}
-.timeline-item .date{font-size:.82rem;color:var(--accent);margin-bottom:6px}
-.timeline-item p{color:var(--text-dim);font-size:.9rem}
+/* ═══════════ BADGE ═══════════ */
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.badge-green{background:rgba(34,211,154,.12);color:#22d39a}
+.badge-amber{background:rgba(251,191,36,.12);color:#fbbf24}
+.badge-red{background:rgba(248,113,113,.12);color:#f87171}
+
+/* ═══════════ GLOW DECORATIONS ═══════════ */
+.glow-tl{position:absolute;top:-200px;left:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(107,138,255,.08) 0%,transparent 70%);pointer-events:none}
+.glow-br{position:absolute;bottom:-200px;right:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(139,92,246,.06) 0%,transparent 70%);pointer-events:none}
+
+/* ═══════════ COLLAPSE ═══════════ */
+details{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px}
+details summary{padding:16px 20px;cursor:pointer;font-weight:600;color:var(--text-bright);list-style:none;display:flex;align-items:center;gap:10px}
+details summary::before{content:'▸';color:var(--accent);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}
+details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem}
 
 /* ═══════════ FOOTER ═══════════ */
-footer{
-  padding:60px 0 40px;
-  border-top:1px solid var(--border);
-  text-align:center;
-}
-footer .footer-links{
-  display:flex;gap:28px;justify-content:center;flex-wrap:wrap;
-  margin-bottom:20px;
-}
+footer{padding:60px 0 40px;border-top:1px solid var(--border);text-align:center}
+footer .footer-links{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
 footer .footer-links a{color:var(--text-dim);font-size:.88rem}
 footer .copyright{font-size:.8rem;color:rgba(148,163,184,.5)}
 
@@ -392,54 +306,13 @@ footer .copyright{font-size:.8rem;color:rgba(148,163,184,.5)}
   section{padding:60px 0}
   .hero-stats{gap:20px}
   .hero-stat .num{font-size:1.5rem}
-  .pipeline{flex-direction:column;align-items:stretch}
-  .pipe-arrow{transform:rotate(90deg);text-align:center}
   .card-grid{grid-template-columns:1fr}
   .theorem-grid{grid-template-columns:1fr}
   .metrics{grid-template-columns:repeat(2,1fr)}
+  .algo-step{padding-left:56px}
+  .algo-line{left:20px}
+  .algo-num{left:0;width:34px;height:34px;font-size:.78rem}
 }
-
-/* ═══════════ BADGE ═══════════ */
-.badge{
-  display:inline-block;
-  padding:3px 10px;border-radius:999px;
-  font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
-}
-.badge-green{background:rgba(34,211,154,.12);color:#22d39a}
-.badge-amber{background:rgba(251,191,36,.12);color:#fbbf24}
-.badge-red{background:rgba(248,113,113,.12);color:#f87171}
-
-/* ═══════════ GLOW DECORATIONS ═══════════ */
-.glow-tl{
-  position:absolute;top:-200px;left:-200px;
-  width:500px;height:500px;
-  background:radial-gradient(circle,rgba(107,138,255,.08) 0%,transparent 70%);
-  pointer-events:none;
-}
-.glow-br{
-  position:absolute;bottom:-200px;right:-200px;
-  width:500px;height:500px;
-  background:radial-gradient(circle,rgba(139,92,246,.06) 0%,transparent 70%);
-  pointer-events:none;
-}
-
-/* ═══════════ COLLAPSE ═══════════ */
-details{
-  background:var(--bg-card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  margin-bottom:12px;
-}
-details summary{
-  padding:16px 20px;cursor:pointer;
-  font-weight:600;color:var(--text-bright);
-  list-style:none;display:flex;align-items:center;gap:10px;
-}
-details summary::before{
-  content:'▸';color:var(--accent);transition:transform .2s;
-}
-details[open] summary::before{transform:rotate(90deg)}
-details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem}
 </style>
 </head>
 <body>
@@ -449,11 +322,11 @@ details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem
   <div class="container">
     <a href="#" class="nav-brand">
       <img src="docs/images/logo-graph.jpg" alt="Logo">
-      <span>Graph Covariance</span>
+      <span>Graph Covariance Forecasting</span>
     </a>
     <ul class="nav-links">
       <li><a href="#overview">Overview</a></li>
-      <li><a href="#pipeline">Pipeline</a></li>
+      <li><a href="#algorithm">Algorithm</a></li>
       <li><a href="#replication">Replication</a></li>
       <li><a href="#extensions">Extensions</a></li>
       <li><a href="#results">Results</a></li>
@@ -474,7 +347,7 @@ details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem
     <img src="docs/images/logo-graph.jpg" alt="Graph Covariance Logo" class="hero-logo">
     <h1>Graph <span>Covariance</span> Forecasting</h1>
     <p class="subtitle">
-      Realized covariance replication · graph volatility spillovers · geometric spectral learning.
+      Realized covariance replication, graph volatility spillovers, and geometric spectral learning.
       From synchronized intraday prices through graph-based HAR models to minimum-variance portfolio outcomes.
     </p>
     <div class="hero-stats">
@@ -488,7 +361,7 @@ details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
         View Repository
       </a>
-      <a href="#results" class="btn btn-outline">Explore Results</a>
+      <a href="#algorithm" class="btn btn-outline">Explore Algorithm</a>
       <a href="https://doi.org/10.1093/jjfinec/nbae026" class="btn btn-outline">Original Paper</a>
     </div>
   </div>
@@ -504,7 +377,7 @@ details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem
     <div class="section-header">
       <div class="tag">Overview</div>
       <h2>The Research Question</h2>
-      <p>Can graph-based information from stock and stock-pair networks improve covariance forecasts — and do better forecasts produce lower-risk portfolios?</p>
+      <p>Can graph-based information from stock and stock-pair networks improve covariance matrix forecasts — and do more accurate forecasts produce lower-risk portfolios?</p>
     </div>
     <div class="card-grid">
       <div class="card">
@@ -526,78 +399,210 @@ details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         </div>
         <h3>Geometric Spectral Gate</h3>
-        <p>A 175-parameter regime-dependent network that pools five geometric experts, applies learned eigenvalue cleaning and targets equal-priority accuracy and long-only portfolio risk.</p>
+        <p>A 175-parameter regime-dependent network that pools five geometric experts, applies learned eigenvalue cleaning, and targets equal-priority accuracy and long-only portfolio risk.</p>
       </div>
     </div>
     <div style="text-align:center;margin-top:32px">
-      <span class="badge badge-amber">Public-Data Replication</span>
-      &nbsp;
-      <span class="badge badge-green">Reproducible</span>
-      &nbsp;
-      <span class="badge badge-red">Reused Benchmark — Not Confirmed</span>
+      <span class="badge badge-amber">Public-Data Replication</span>&nbsp;
+      <span class="badge badge-green">Reproducible</span>&nbsp;
+      <span class="badge badge-red">Reused Benchmark</span>
     </div>
   </div>
 </section>
 
-<!-- ═══════════ PIPELINE ═══════════ -->
-<section id="pipeline">
+<!-- ═══════════ ALGORITHM — step-by-step ═══════════ -->
+<section id="algorithm">
   <div class="container">
     <div class="section-header">
-      <div class="tag">Method</div>
-      <h2>From Prices to Portfolio Outcomes</h2>
-      <p>The target contains each stock's variance and every pair's covariance. Daily univariate volatility series cannot supply that cross-asset information.</p>
-    </div>
-    <div class="pipeline">
-      <div class="pipe-step">
-        <div class="step-num">Step 1</div>
-        <h4>Synchronized Prices</h4>
-        <p>27-stock minute bars from Syncster</p>
-      </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step">
-        <div class="step-num">Step 2</div>
-        <h4>5-min Returns</h4>
-        <p>Five offset grids, averaged</p>
-      </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step">
-        <div class="step-num">Step 3</div>
-        <h4>Realized Covariance</h4>
-        <p>Full 27 × 27 matrices</p>
-      </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step">
-        <div class="step-num">Step 4</div>
-        <h4>Graph Construction</h4>
-        <p>Stock + pair line graphs</p>
-      </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step">
-        <div class="step-num">Step 5</div>
-        <h4>HAR + GNN Forecasts</h4>
-        <p>13 reference specifications</p>
-      </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step">
-        <div class="step-num">Step 6</div>
-        <h4>Pooling &amp; Cleaning</h4>
-        <p>Adaptive weights + spectral guard</p>
-      </div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step">
-        <div class="step-num">Step 7</div>
-        <h4>Portfolio &amp; Loss</h4>
-        <p>GMVP, GMVP+, MCS</p>
-      </div>
+      <div class="tag">Algorithm</div>
+      <h2>How the Forecasting Pipeline Works</h2>
+      <p>A step-by-step decomposition of the complete forecasting procedure, from raw synchronized prices to portfolio allocation and loss evaluation.</p>
     </div>
 
-    <div class="arch-img">
-      <img src="covariance_replication/docs/architecture.png" alt="Covariance Replication Architecture">
-    </div>
-    <p style="text-align:center;color:var(--text-dim);font-size:.85rem;margin-top:12px">
-      Original pipeline: variance forecasting uses empty, sector, complete or graphical-lasso stock graphs.
-      Correlation forecasting uses empty, complete or line graphs on stock pairs.
-    </p>
+    <div class="algo-container">
+      <div class="algo-line"></div>
+
+      <!-- Step 1 -->
+      <div class="algo-step">
+        <div class="algo-num">1</div>
+        <div class="algo-card">
+          <div class="algo-title">Price Synchronization and Return Construction</div>
+          <div class="algo-desc">
+            Synchronize minute-level trade prices for all $n = 27$ stocks within each trading session (09:30–16:00 ET).
+            Construct five-minute log-return vectors $r_t^{(g)} \in \mathbb{R}^{27}$ on each of five offset grids $g = 0, \dots, 4$ to mitigate microstructure noise.
+          </div>
+          <div class="algo-math">
+            $$r_{t,i}^{(g)} = \log P_i(t_{g} + 5\text{min}) - \log P_i(t_{g})$$
+          </div>
+          <div class="algo-detail">
+            Sessions with fewer than 350 valid bars or missing any of the 27 stocks are excluded.
+            Carry-forward imputation is limited to 10 minutes within the same session.
+          </div>
+          <div class="algo-output">Output: Synchronized return matrix per session</div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="algo-step">
+        <div class="algo-num">2</div>
+        <div class="algo-card">
+          <div class="algo-title">Realized Covariance Estimation</div>
+          <div class="algo-desc">
+            Compute the realized covariance matrix $\Sigma_t \in \mathbb{R}^{27 \times 27}$ for each retained session by averaging outer products across five offset grids. Decompose via DRD into realized variances $D_t$ and correlations $R_t$.
+          </div>
+          <div class="algo-math">
+            $$\Sigma_t = \frac{1}{5}\sum_{g=0}^{4}\sum_{\tau} r_{t,\tau}^{(g)}\, r_{t,\tau}^{(g)\top}, \qquad \Sigma_t = D_t\, R_t\, D_t$$
+          </div>
+          <div class="algo-detail">
+            The DRD decomposition separates the variance-forecasting and correlation-forecasting problems. Each correlation series $\rho_{t,(i,j)}$ becomes a separate forecasting target on the $m = 351$ stock-pair graph.
+          </div>
+          <div class="algo-output">Output: $\Sigma_t$, $D_t^2 = \text{diag}(\Sigma_t)$, $R_t$ per session</div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="algo-step">
+        <div class="algo-num">3</div>
+        <div class="algo-card">
+          <div class="algo-title">Graph Construction</div>
+          <div class="algo-desc">
+            Construct two graph families. <strong>Stock graphs</strong> ($n = 27$ nodes): empty, sector, complete, and graphical-lasso adjacency estimated from past returns with 5-fold cross-validation.
+            <strong>Stock-pair line graph</strong> ($m = 351$ nodes): two pairs are adjacent if they share a stock endpoint.
+          </div>
+          <div class="algo-math">
+            $$W_L = \frac{B^\top B - 2I_m}{2(n-2)}, \qquad B \in \{0,1\}^{n \times m} \text{ (endpoint incidence)}$$
+          </div>
+          <div class="algo-detail">
+            The line-graph spectrum contracts centered pair features at rate $\rho_{27} = 0.46$ per pass (Lemma 1).
+            The factorization $B^\top(BX)$ avoids materializing the $351 \times 351$ adjacency.
+          </div>
+          <div class="algo-output">Output: Stock adjacency $W_S$, pair adjacency $W_L$</div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="algo-step">
+        <div class="algo-num">4</div>
+        <div class="algo-card">
+          <div class="algo-title">HAR Feature Assembly and Graph Aggregation</div>
+          <div class="algo-desc">
+            Assemble heterogeneous autoregressive (HAR) features at three time scales: daily ($h = 1$), weekly ($h = 2$–$5$), and monthly ($h = 6$–$22$) averages of past realized quantities. Apply one-pass graph aggregation on each scale.
+          </div>
+          <div class="algo-math">
+            $$\bar{x}_{t}^{(d)} = x_{t-1}, \quad \bar{x}_{t}^{(w)} = \frac{1}{4}\sum_{j=1}^{4} x_{t-1-j}, \quad \bar{x}_{t}^{(m)} = \frac{1}{17}\sum_{j=5}^{21} x_{t-1-j}$$
+            $$\tilde{x}_{t}^{(h)} = W\, \bar{x}_{t}^{(h)} \quad \text{(graph-smoothed features)}$$
+          </div>
+          <div class="algo-detail">
+            Variance features use stock graph $W_S$; correlation features use line graph $W_L$.
+            HARQ variants include realized quarticity interaction terms.
+            Lag groups are disjoint to avoid collinearity.
+          </div>
+          <div class="algo-output">Output: Feature matrix $X_t \in \mathbb{R}^{n \times p}$ (variance) or $\mathbb{R}^{m \times p}$ (correlation)</div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="algo-step">
+        <div class="algo-num">5</div>
+        <div class="algo-card">
+          <div class="algo-title">OLS Regression and Covariance Forecast</div>
+          <div class="algo-desc">
+            For each of the 13 specifications (4 variance graphs × 3 correlation graphs + HAR-Cholesky), fit OLS on a rolling 1,000-observation window with monthly refits.
+            Reconstruct the full $27 \times 27$ forecast $\hat{\Sigma}_{t+h}$ via predicted variances $\hat{D}$ and correlations $\hat{R}$.
+          </div>
+          <div class="algo-math">
+            $$\hat{D}_{t+h}^2 = \alpha_0 + \sum_h \beta_h \bar{x}_t^{(h)}, \qquad \hat{R}_{t+h} = \text{clip}_{[-1,1]}(\gamma_0 + \sum_h \delta_h \bar{z}_t^{(h)})$$
+            $$\hat{\Sigma}_{t+h} = \hat{D}_{t+h}\, \text{repair}(\hat{R}_{t+h})\, \hat{D}_{t+h}$$
+          </div>
+          <div class="algo-detail">
+            Correlation repair uses nearest positive-definite projection with eigenvalue floor $10^{-4}$.
+            All scored predictions pass Cholesky factorization.
+            Scaled pivoted QR avoids forming normal equations.
+          </div>
+          <div class="algo-output">Output: $\hat{\Sigma}_{t+h} \succ 0$ for each model and horizon</div>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="algo-step">
+        <div class="algo-num">6</div>
+        <div class="algo-card">
+          <div class="algo-title">Shape Normalization and Expert Mixing</div>
+          <div class="algo-desc">
+            Extract the unit-trace shape $C_j = \hat{\Sigma}_j / \text{tr}(\hat{\Sigma}_j)$ from each expert. The adaptive mixture assigns exponential weights updated causally under delayed feedback, then rescales by the HAR-DRD trace.
+          </div>
+          <div class="algo-math">
+            $$p_{t,j} = \frac{\exp\left(-\eta \sum_{s \in O_t} \ell_{s,j}\right)}{\sum_{i=1}^K \exp\left(-\eta \sum_{s \in O_t} \ell_{s,i}\right)}, \qquad \hat{\Sigma}_t^{\text{mix}} = \tau_t \sum_j p_{t,j}\, C_{t,j}$$
+          </div>
+          <div class="algo-detail">
+            One-session regret is bounded by $2\log K / \eta \approx 2.197$ (Theorem 5, Corollary).
+            The mixture preserves positive definiteness (Lemma 4).
+            For the spectral extension, five SPD experts are pooled geometrically with a learned regime gate.
+          </div>
+          <div class="algo-output">Output: Combined forecast $\hat{\Sigma}_t^{\text{mix}} \succ 0$</div>
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="algo-step">
+        <div class="algo-num">7</div>
+        <div class="algo-card">
+          <div class="algo-title">Eigenvalue Cleaning and Conditioning Guard</div>
+          <div class="algo-desc">
+            For the geometric spectral extension, apply a learned neural eigenvalue transformation followed by an explicit conditioning guard that bounds $\kappa(\hat{\Sigma}) \le 100$.
+          </div>
+          <div class="algo-math">
+            $$\lambda_i' = (1-a)\lambda_i + a\mu, \qquad a = \frac{(\lambda_{\max} - \kappa\, \lambda_{\min})_+}{(\lambda_{\max} - \kappa\, \lambda_{\min})_+ + (\kappa - 1)\mu}$$
+          </div>
+          <div class="algo-detail">
+            Proposition 6 guarantees: all cleaned eigenvalues are positive, trace is preserved, and $\kappa \le 100$. This implies unrestricted GMVP gross leverage $\|w\|_1 \le \sqrt{100} = 10$.
+          </div>
+          <div class="algo-output">Output: Well-conditioned forecast $\hat{\Sigma}_t^{\text{clean}} \succ 0$, $\kappa \le 100$</div>
+        </div>
+      </div>
+
+      <!-- Step 8 -->
+      <div class="algo-step">
+        <div class="algo-num">8</div>
+        <div class="algo-card">
+          <div class="algo-title">Portfolio Construction</div>
+          <div class="algo-desc">
+            Solve for the global minimum-variance portfolio (GMVP) under two constraint sets: unconstrained fully invested and long-only simplex ($w \ge 0$, $\mathbf{1}^\top w = 1$).
+          </div>
+          <div class="algo-math">
+            $$w^{\text{GMVP}} = \frac{\hat{\Sigma}^{-1} \mathbf{1}}{\mathbf{1}^\top \hat{\Sigma}^{-1} \mathbf{1}}, \qquad w^{\text{GMVP+}} = \arg\min_{w \ge 0,\, \mathbf{1}^\top w = 1} w^\top \hat{\Sigma}\, w$$
+          </div>
+          <div class="algo-detail">
+            The unconstrained solution admits short positions; gross leverage can be large when $\kappa(\hat{\Sigma})$ is large.
+            The long-only QP uses OSQP via CVXPY.
+            Proposition 2 shows that lower matrix loss does not guarantee lower portfolio risk.
+          </div>
+          <div class="algo-output">Output: Portfolio weights $w_t$ and realized return $r_t^\top w_t$</div>
+        </div>
+      </div>
+
+      <!-- Step 9 -->
+      <div class="algo-step">
+        <div class="algo-num">9</div>
+        <div class="algo-card">
+          <div class="algo-title">Loss Evaluation and Model Confidence Sets</div>
+          <div class="algo-desc">
+            Evaluate each model on three matrix-distance losses (Euclidean, Frobenius, QLIKE) and portfolio risk. Construct model confidence sets via sequential SQ elimination with stationary bootstrap.
+          </div>
+          <div class="algo-math">
+            $$L_{\text{Euc}} = \|\hat{\Sigma} - \Sigma\|_2, \quad L_{\text{Frob}} = \|\hat{\Sigma} - \Sigma\|_F, \quad L_{\text{QLIKE}} = \log|\hat{\Sigma}| + \text{tr}(\hat{\Sigma}^{-1}\Sigma)$$
+            $$\text{Risk} = \sqrt{252} \cdot \text{std}(r^\top w)$$
+          </div>
+          <div class="algo-detail">
+            MCS uses 10,000 seeded stationary-bootstrap draws at the 5% level.
+            Paired 95% intervals use mean block length $\max(5, h)$ for shape loss and $\max(2, h)$ for MCS.
+            All six shape intervals are pointwise, without a simultaneous multiple-testing guarantee.
+          </div>
+          <div class="algo-output">Output: Loss ratios, MCS p-values, risk estimates, bootstrap intervals</div>
+        </div>
+      </div>
+
+    </div><!-- /algo-container -->
   </div>
 </section>
 
@@ -612,12 +617,12 @@ details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem
 
     <div class="metrics">
       <div class="metric">
-        <div class="value">−1.65%</div>
+        <div class="value">-1.65%</div>
         <div class="metric-label">Euclidean Improvement</div>
         <div class="metric-sub">GHAR(GL,L) vs HAR-DRD, h=1</div>
       </div>
       <div class="metric">
-        <div class="value">−2.60%</div>
+        <div class="value">-2.60%</div>
         <div class="metric-label">Euclidean at h=5</div>
         <div class="metric-sub">Strongest graph advantage</div>
       </div>
@@ -639,37 +644,11 @@ details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem
 
     <div class="table-wrap" style="margin-top:32px">
       <table>
-        <thead>
-          <tr>
-            <th>Metric for GHAR(GL,L)</th>
-            <th>Published Ratio</th>
-            <th>Public Ratio</th>
-            <th>Published MCS p</th>
-            <th>Public MCS p</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Metric for GHAR(GL,L)</th><th>Published Ratio</th><th>Public Ratio</th><th>Published MCS p</th><th>Public MCS p</th></tr></thead>
         <tbody>
-          <tr>
-            <td>Euclidean</td>
-            <td>0.975</td>
-            <td>0.9835</td>
-            <td>1.000</td>
-            <td class="best">0.0023</td>
-          </tr>
-          <tr>
-            <td>Frobenius</td>
-            <td>0.975</td>
-            <td>0.9855</td>
-            <td>0.768</td>
-            <td class="best">0.0008</td>
-          </tr>
-          <tr>
-            <td>QLIKE</td>
-            <td>0.982</td>
-            <td>0.9851</td>
-            <td>1.000</td>
-            <td>0.5572</td>
-          </tr>
+          <tr><td>Euclidean</td><td>0.975</td><td>0.9835</td><td>1.000</td><td class="best">0.0023</td></tr>
+          <tr><td>Frobenius</td><td>0.975</td><td>0.9855</td><td>0.768</td><td class="best">0.0008</td></tr>
+          <tr><td>QLIKE</td><td>0.982</td><td>0.9851</td><td>1.000</td><td>0.5572</td></tr>
         </tbody>
       </table>
     </div>
@@ -690,9 +669,8 @@ details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem
     </div>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:32px">
-      <!-- Extension 1 -->
       <div class="card" style="border-left:3px solid var(--accent)">
-        <h3>🔄 Adaptive Shape Mixture</h3>
+        <h3>Adaptive Shape Mixture</h3>
         <p style="margin-bottom:16px">
           Three experts (HAR-DRD, GHAR(GL,L), HAR-Cholesky) contribute unit-trace covariance shapes.
           Exponential weights update causally with delayed feedback. The common HAR-DRD trace provides total variance.
@@ -703,17 +681,16 @@ details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem
         <p><strong>Primary result:</strong> Confirmation 95% CI includes zero. Learning the mixture weights does not establish a statistically significant shape-loss improvement.</p>
       </div>
 
-      <!-- Extension 2 -->
       <div class="card" style="border-left:3px solid var(--accent2)">
-        <h3>🧠 Geometric Spectral Gate</h3>
+        <h3>Geometric Spectral Gate</h3>
         <p style="margin-bottom:16px">
-          Five SPD experts pooled with a 175-parameter regime gate + learned eigenvalue cleaner.
+          Five SPD experts pooled with a 175-parameter regime gate and learned eigenvalue cleaner.
           Training optimizes equal-weight Frobenius distance and long-only portfolio return. Condition number capped at 100.
         </p>
         <div class="arch-img" style="margin:16px 0">
           <img src="covariance_replication/docs/spectral-architecture.png" alt="Spectral Architecture">
         </div>
-        <p><strong>Primary result:</strong> Frobenius −1.79% vs HAR-DRD. Risk interval includes zero. The joint accuracy-and-risk criterion is <strong>not passed</strong>.</p>
+        <p><strong>Primary result:</strong> Frobenius -1.79% vs HAR-DRD. Risk interval includes zero. The joint accuracy-and-risk criterion is <strong>not passed</strong>.</p>
       </div>
     </div>
   </div>
@@ -728,92 +705,19 @@ details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem
       <p>All models evaluated on the same 443 one-session origins in the 2025–October 2026 reused benchmark. No universal best model exists across all objectives.</p>
     </div>
 
-    <!-- Main Results Table -->
     <div class="table-wrap">
       <table>
-        <thead>
-          <tr>
-            <th>Model</th>
-            <th>Euclidean Ratio</th>
-            <th>Frobenius Ratio</th>
-            <th>QLIKE Ratio</th>
-            <th>Annual Risk (%)</th>
-            <th>Verdict</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Model</th><th>Euclidean Ratio</th><th>Frobenius Ratio</th><th>QLIKE Ratio</th><th>Annual Risk (%)</th><th>Assessment</th></tr></thead>
         <tbody>
-          <tr>
-            <td>HAR-DRD</td>
-            <td>1.0000</td>
-            <td>1.0000</td>
-            <td>1.0000</td>
-            <td>9.4351</td>
-            <td><span class="badge badge-amber">Reference</span></td>
-          </tr>
-          <tr>
-            <td>GHAR(GL,L)</td>
-            <td>1.0113</td>
-            <td>1.0109</td>
-            <td>1.1609</td>
-            <td>9.7468</td>
-            <td><span class="badge badge-red">Worse</span></td>
-          </tr>
-          <tr>
-            <td>HAR-Cholesky</td>
-            <td>1.0137</td>
-            <td>1.0062</td>
-            <td>1.0764</td>
-            <td>9.4047</td>
-            <td><span class="badge badge-green">Best Risk</span></td>
-          </tr>
-          <tr>
-            <td>Uniform Shape</td>
-            <td>0.9982</td>
-            <td>0.9987</td>
-            <td>0.9926</td>
-            <td>9.4664</td>
-            <td><span class="badge badge-green">Strong</span></td>
-          </tr>
-          <tr class="highlight-row">
-            <td><strong>Adaptive Shape</strong></td>
-            <td>0.9977</td>
-            <td>0.9979</td>
-            <td class="best">0.9918</td>
-            <td>9.4912</td>
-            <td><span class="badge badge-amber">Mixed</span></td>
-          </tr>
-          <tr>
-            <td>Arithmetic HAR Cov</td>
-            <td>1.0827</td>
-            <td>1.0906</td>
-            <td>1.0158</td>
-            <td class="best">9.2113</td>
-            <td><span class="badge badge-amber">Best Risk, Worst Loss</span></td>
-          </tr>
-          <tr>
-            <td>Log-Euclidean HAR Cov</td>
-            <td>0.9860</td>
-            <td>0.9808</td>
-            <td>1.0897</td>
-            <td>9.4763</td>
-            <td><span class="badge badge-green">Strong Loss</span></td>
-          </tr>
-          <tr class="highlight-row">
-            <td><strong>Static Geometric Pool</strong></td>
-            <td class="best">0.9766</td>
-            <td class="best">0.9740</td>
-            <td>0.9999</td>
-            <td>9.4587</td>
-            <td><span class="badge badge-green">Best Loss</span></td>
-          </tr>
-          <tr class="highlight-row">
-            <td><strong>Geometric Spectral Gate</strong></td>
-            <td>0.9839</td>
-            <td>0.9821</td>
-            <td>0.9961</td>
-            <td>9.4061</td>
-            <td><span class="badge badge-amber">Joint Fail</span></td>
-          </tr>
+          <tr><td>HAR-DRD</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>9.4351</td><td><span class="badge badge-amber">Reference</span></td></tr>
+          <tr><td>GHAR(GL,L)</td><td>1.0113</td><td>1.0109</td><td>1.1609</td><td>9.7468</td><td><span class="badge badge-red">Inferior</span></td></tr>
+          <tr><td>HAR-Cholesky</td><td>1.0137</td><td>1.0062</td><td>1.0764</td><td>9.4047</td><td><span class="badge badge-green">Lowest Risk</span></td></tr>
+          <tr><td>Uniform Shape</td><td>0.9982</td><td>0.9987</td><td>0.9926</td><td>9.4664</td><td><span class="badge badge-green">Strong</span></td></tr>
+          <tr class="highlight-row"><td><strong>Adaptive Shape</strong></td><td>0.9977</td><td>0.9979</td><td class="best">0.9918</td><td>9.4912</td><td><span class="badge badge-amber">Inconclusive</span></td></tr>
+          <tr><td>Arithmetic HAR Cov</td><td>1.0827</td><td>1.0906</td><td>1.0158</td><td class="best">9.2113</td><td><span class="badge badge-amber">Risk/Loss Trade-off</span></td></tr>
+          <tr><td>Log-Euclidean HAR Cov</td><td>0.9860</td><td>0.9808</td><td>1.0897</td><td>9.4763</td><td><span class="badge badge-green">Strong Loss</span></td></tr>
+          <tr class="highlight-row"><td><strong>Static Geometric Pool</strong></td><td class="best">0.9766</td><td class="best">0.9740</td><td>0.9999</td><td>9.4587</td><td><span class="badge badge-green">Lowest Loss</span></td></tr>
+          <tr class="highlight-row"><td><strong>Geometric Spectral Gate</strong></td><td>0.9839</td><td>0.9821</td><td>0.9961</td><td>9.4061</td><td><span class="badge badge-amber">Joint Criterion Fails</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -821,68 +725,34 @@ details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem
       Ratios use HAR-DRD as denominator — lower is better. Risk is annualized long-only standard deviation before transaction costs.
     </p>
 
-    <!-- Uncertainty Table -->
     <h3 style="color:var(--text-bright);margin:48px 0 20px;text-align:center">Paired Uncertainty Intervals — Geometric Spectral Gate</h3>
     <div class="table-wrap">
       <table>
-        <thead>
-          <tr>
-            <th>Reference</th>
-            <th>Frobenius Δ (%)</th>
-            <th>95% CI</th>
-            <th>Variance Δ (%)</th>
-            <th>95% CI</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Reference</th><th>Frobenius Change (%)</th><th>95% CI</th><th>Variance Change (%)</th><th>95% CI</th></tr></thead>
         <tbody>
-          <tr>
-            <td>HAR-DRD</td>
-            <td class="best">−1.789</td>
-            <td>[−2.822, −0.661]</td>
-            <td>−0.613</td>
-            <td>[−2.149, +0.951]</td>
-          </tr>
-          <tr>
-            <td>Adaptive Shape</td>
-            <td class="best">−1.580</td>
-            <td>[−3.114, −0.189]</td>
-            <td>−1.784</td>
-            <td>[−3.620, +0.926]</td>
-          </tr>
-          <tr>
-            <td>Uniform Shape</td>
-            <td class="best">−1.664</td>
-            <td>[−3.298, −0.208]</td>
-            <td>−1.269</td>
-            <td>[−2.650, +0.912]</td>
-          </tr>
-          <tr>
-            <td>Static Pool</td>
-            <td>+0.833</td>
-            <td>[−0.130, +2.191]</td>
-            <td>−1.109</td>
-            <td>[−2.159, +0.297]</td>
-          </tr>
+          <tr><td>HAR-DRD</td><td class="best">-1.789</td><td>[-2.822, -0.661]</td><td>-0.613</td><td>[-2.149, +0.951]</td></tr>
+          <tr><td>Adaptive Shape</td><td class="best">-1.580</td><td>[-3.114, -0.189]</td><td>-1.784</td><td>[-3.620, +0.926]</td></tr>
+          <tr><td>Uniform Shape</td><td class="best">-1.664</td><td>[-3.298, -0.208]</td><td>-1.269</td><td>[-2.650, +0.912]</td></tr>
+          <tr><td>Static Pool</td><td>+0.833</td><td>[-0.130, +2.191]</td><td>-1.109</td><td>[-2.159, +0.297]</td></tr>
         </tbody>
       </table>
     </div>
     <p style="text-align:center;color:var(--text-dim);font-size:.85rem;margin-top:16px">
-      The joint rule requires <strong>both</strong> intervals below zero. The risk interval against HAR-DRD includes zero → candidate <strong>fails</strong>.
+      The joint rule requires <strong>both</strong> intervals below zero. The risk interval against HAR-DRD includes zero; the candidate <strong>fails</strong> the predefined criterion.
     </p>
 
-    <!-- Key Insight Cards -->
     <div class="card-grid" style="margin-top:48px">
       <div class="card">
-        <h3>📊 Accuracy vs Risk Trade-off</h3>
-        <p>The static pool has the lowest matrix-distance losses (7-parameter model). The arithmetic pool has the lowest risk but substantially higher matrix losses. No single model dominates all objectives — this is a fundamental feature, not a bug.</p>
+        <h3>Accuracy vs Risk Trade-off</h3>
+        <p>The static pool has the lowest matrix-distance losses (7-parameter model). The arithmetic pool has the lowest risk but substantially higher matrix losses. No single model dominates all objectives — this is a structural property, not a limitation of the analysis.</p>
       </div>
       <div class="card">
-        <h3>🔬 Development → Confirmation Drift</h3>
-        <p>Development favored the graph model over HAR-DRD. That ranking <strong>reverses</strong> in confirmation. A fixed uniform combination already captures most of the adaptive mixture's value. This pattern warns against evaluating only in-sample results.</p>
+        <h3>Development to Confirmation Drift</h3>
+        <p>Development favored the graph model over HAR-DRD on short horizons. That ranking <strong>reverses</strong> in confirmation. A fixed uniform combination already captures most of the adaptive mixture's value. This pattern warns against evaluating only in-sample results.</p>
       </div>
       <div class="card">
-        <h3>⚡ Conditioning Stability</h3>
-        <p>The raw GHAR(GL,L) forecast reaches condition number 127,174 — the adaptive mixture caps at 223 (570× reduction). The spectral gate guarantees κ ≤ 100 by construction, with worst-case gross leverage bounded by √100 = 10.</p>
+        <h3>Conditioning and Stability</h3>
+        <p>The raw GHAR(GL,L) forecast reaches condition number 127,174. The adaptive mixture caps at 223 (570-fold reduction). The spectral gate guarantees $\kappa \le 100$ by construction, bounding gross leverage by $\sqrt{100} = 10$.</p>
       </div>
     </div>
   </div>
@@ -901,32 +771,32 @@ details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem
       <div class="theorem-box">
         <div class="theorem-label">Lemma 1</div>
         <h4>Line-Graph Spectral Contraction</h4>
-        <p>One aggregation pass contracts centered pair features by at most <strong>ρ₂₇ = 0.46</strong>. Three passes reduce centered variation by 90.3%. Aggregation runs in O(n²d) via the incidence factorization.</p>
+        <p>One aggregation pass contracts centered pair features by at most $\rho_{27} = 0.46$. Three passes reduce centered variation by 90.3%. Aggregation runs in $O(n^2 d)$ via the incidence factorization $B^\top(BX)$.</p>
       </div>
       <div class="theorem-box">
         <div class="theorem-label">Proposition 2</div>
-        <h4>Loss–Risk Counterexample</h4>
-        <p>All three covariance losses (Euclidean, Frobenius, QLIKE) can improve while true GMVP variance <strong>increases</strong> from 0.800 to 0.8125. Matrix accuracy ≠ allocation quality.</p>
+        <h4>Loss-Risk Counterexample</h4>
+        <p>All three covariance losses (Euclidean, Frobenius, QLIKE) can improve while true GMVP variance <strong>increases</strong> from 0.800 to 0.8125. Matrix accuracy does not imply allocation quality.</p>
       </div>
       <div class="theorem-box">
         <div class="theorem-label">Lemma 3</div>
         <h4>Relative Spectral Risk Bound</h4>
-        <p>A relative spectral approximation (1−δ)H ⪯ S ⪯ (1+δ)H yields portfolio risk inflation at most (1+δ)/(1−δ). At δ = 0.05, the bound is +10.5%.</p>
+        <p>A relative spectral approximation $(1-\delta)H \preceq S \preceq (1+\delta)H$ yields portfolio risk inflation at most $(1+\delta)/(1-\delta)$. At $\delta = 0.05$, the bound is +10.5%.</p>
       </div>
       <div class="theorem-box">
         <div class="theorem-label">Lemma 4</div>
         <h4>Positive Shape Mixing</h4>
-        <p>Trace-one expert mixtures preserve positive definiteness and the selected total variance. The shape loss is convex under the mixture, enabling regret analysis.</p>
+        <p>Trace-one expert mixtures preserve positive definiteness and the selected total variance. The shape loss $\ell(C, C^*) = \frac{1}{2}\|C - C^*\|_F^2 \in [0,1]$ is convex under the mixture.</p>
       </div>
       <div class="theorem-box">
         <div class="theorem-label">Theorem 5</div>
         <h4>Delayed Online Regret</h4>
-        <p>Finite-sequence shape-loss regret bounds including feedback delay. The <strong>one-session bound is 2 log 3 ≈ 2.197</strong>, constant regardless of sequence length.</p>
+        <p>Finite-sequence shape-loss regret bounds including feedback delay. The one-session bound is $2\log 3 \approx 2.197$, constant regardless of sequence length $T$.</p>
       </div>
       <div class="theorem-box">
-        <div class="theorem-label">Spectral Guard</div>
-        <h4>Condition Number Guarantee</h4>
-        <p>The geometric spectral construction bounds the output condition number by <strong>100</strong> under its positive-input assumptions. Gross leverage ≤ 10 follows.</p>
+        <div class="theorem-label">Proposition 6</div>
+        <h4>Spectral Conditioning Guard</h4>
+        <p>The cleaning construction bounds output condition number by $\kappa = 100$ under positive-input assumptions. Trace is preserved. Gross leverage $\|w\|_1 \le \sqrt{\kappa}$ follows.</p>
       </div>
     </div>
 
@@ -936,38 +806,6 @@ details .details-body{padding:0 20px 20px;color:var(--text-dim);font-size:.92rem
     <p style="text-align:center;color:var(--text-dim);font-size:.85rem;margin-top:12px">
       Relationship between mathematical guarantees. Conditional guarantees do not imply lower future portfolio risk.
     </p>
-  </div>
-</section>
-
-<!-- ═══════════ TIMELINE ═══════════ -->
-<section id="timeline" style="background:var(--bg-dark)">
-  <div class="container">
-    <div class="section-header">
-      <div class="tag">Timeline</div>
-      <h2>Experiment Periods</h2>
-    </div>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="date">2016 – June 2022</div>
-        <h4>Calibration Window</h4>
-        <p>1,000-observation rolling calibration from public Syncster trade bars. Spans more than six calendar years due to strict shared-session screening.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="date">July 2022 – December 2024</div>
-        <h4>Development Period</h4>
-        <p>623 one-session forecast origins. Method, experts and learning rate fixed after inspecting development results. Graph model favored on short horizons.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="date">January 2025 – October 2026</div>
-        <h4>Confirmation / Reused Benchmark</h4>
-        <p>443 one-session origins. Confirmation intervals include zero. The geometric spectral architecture was developed after inspecting this window — it is a reused benchmark.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="date">Future</div>
-        <h4>Fresh Confirmation Needed</h4>
-        <p>Fresh dates or an independently specified universe are required to assess confirmation after the spectral architecture search.</p>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -992,7 +830,7 @@ python -m unittest discover -s tests -v</code></pre>
 
     <div class="card-grid" style="margin-top:32px">
       <div class="card">
-        <h3>📓 Notebooks</h3>
+        <h3>Notebooks</h3>
         <p>
           <a href="https://github.com/khaamr/graph-covariance-forecasting/blob/main/covariance_replication/Covariance_Replication.ipynb">Covariance Replication</a><br>
           <a href="https://github.com/khaamr/graph-covariance-forecasting/blob/main/covariance_replication/Extended_Covariance.ipynb">Adaptive Shape Extension</a><br>
@@ -1000,7 +838,7 @@ python -m unittest discover -s tests -v</code></pre>
         </p>
       </div>
       <div class="card">
-        <h3>📊 Data & Figures</h3>
+        <h3>Data and Figures</h3>
         <p>
           <a href="https://huggingface.co/datasets/syncster-data/historical-market-data/tree/eff0dac55d843b3b83caec819efa213021a3e3e5">Pinned Public Data</a><br>
           <a href="research_dashboard.html">Interactive Figure Gallery</a><br>
@@ -1008,7 +846,7 @@ python -m unittest discover -s tests -v</code></pre>
         </p>
       </div>
       <div class="card">
-        <h3>📋 Documentation</h3>
+        <h3>Documentation</h3>
         <p>
           <a href="https://github.com/khaamr/graph-covariance-forecasting/blob/main/covariance_replication/docs/theory.md">Mathematical Proofs</a><br>
           <a href="https://github.com/khaamr/graph-covariance-forecasting/blob/main/covariance_replication/docs/protocol-audit.md">Protocol Audit</a><br>
@@ -1017,7 +855,6 @@ python -m unittest discover -s tests -v</code></pre>
       </div>
     </div>
 
-    <!-- Limitations -->
     <details style="margin-top:32px">
       <summary>Data and Limitations</summary>
       <div class="details-body">
@@ -1044,24 +881,27 @@ python -m unittest discover -s tests -v</code></pre>
       <a href="research_dashboard.html">Figures</a>
     </div>
     <p class="copyright">
-      Based on Zhang, Pu, Cucuringu & Dong · Journal of Financial Econometrics · Public-data replication and extensions
+      Based on Zhang, Pu, Cucuringu and Dong &middot; Journal of Financial Econometrics &middot; Public-data replication and extensions
     </p>
   </div>
 </footer>
 
-<!-- ═══════════ SCROLL SPY ═══════════ -->
+<!-- ═══════════ SCROLL SPY + STEP ANIMATION ═══════════ -->
 <script>
+// Nav scroll spy
 document.addEventListener('scroll',()=>{
-  const sections = document.querySelectorAll('section[id]');
-  const links = document.querySelectorAll('.nav-links a');
-  let current = '';
-  sections.forEach(s=>{
-    if(window.scrollY >= s.offsetTop - 120) current = s.id;
-  });
-  links.forEach(a=>{
-    a.classList.toggle('active', a.getAttribute('href')==='#'+current);
-  });
+  const sections=document.querySelectorAll('section[id]');
+  const links=document.querySelectorAll('.nav-links a');
+  let current='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-120) current=s.id});
+  links.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+current)});
 });
+
+// Algorithm steps reveal on scroll
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}});
+},{threshold:0.15});
+document.querySelectorAll('.algo-step').forEach(s=>observer.observe(s));
 </script>
 </body>
 </html>
