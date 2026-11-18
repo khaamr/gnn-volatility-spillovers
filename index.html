@@ -49,10 +49,10 @@ code{background:rgba(99,130,255,.1);padding:2px 6px;border-radius:4px;font-size:
 
 /* ═══════════ LAYOUT ═══════════ */
 .container{max-width:1200px;margin:0 auto;padding:0 24px}
-section{padding:100px 0}
+section{padding:100px 0;position:relative}
 section:nth-child(even){background:var(--bg-card-alt)}
 
-/* ═══════════ HERO ═══════════ */
+/* ═══════════ HERO WITH PARALLAX ═══════════ */
 .hero{
   position:relative;
   min-height:100vh;
@@ -63,10 +63,13 @@ section:nth-child(even){background:var(--bg-card-alt)}
   text-align:center;
 }
 .hero-bg{
-  position:absolute;inset:0;
+  position:absolute;
+  top:-15%;left:0;right:0;bottom:-15%;
   background:url('docs/images/hero-bg.jpg') center/cover no-repeat;
   filter:brightness(.35);
   z-index:0;
+  will-change:transform;
+  transform:translate3d(0,0,0);
 }
 .hero-overlay{
   position:absolute;inset:0;
@@ -77,6 +80,7 @@ section:nth-child(even){background:var(--bg-card-alt)}
   position:relative;z-index:2;
   max-width:850px;
   padding:40px 24px;
+  will-change:transform,opacity;
 }
 .hero-logo{
   width:120px;height:120px;
@@ -84,6 +88,10 @@ section:nth-child(even){background:var(--bg-card-alt)}
   margin:0 auto 32px;
   box-shadow:0 0 60px rgba(107,138,255,.3);
   border:2px solid rgba(107,138,255,.25);
+  transition:transform .3s ease;
+}
+.hero-logo:hover{
+  transform:scale(1.05) rotate(2deg);
 }
 .hero h1{
   font-size:clamp(2.2rem,5.5vw,3.8rem);
@@ -131,6 +139,7 @@ section:nth-child(even){background:var(--bg-card-alt)}
   font-weight:600;font-size:.95rem;
   transition:all .25s;
   border:1px solid transparent;
+  cursor:pointer;
 }
 .btn-primary{
   background:linear-gradient(135deg,var(--accent),var(--accent2));
@@ -159,21 +168,21 @@ nav{
 nav .container{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px}
 .nav-brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:1.05rem;color:var(--text-bright)}
 .nav-brand img{width:32px;height:32px;border-radius:8px}
-.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links{display:flex;gap:24px;list-style:none}
 .nav-links a{color:var(--text-dim);font-size:.88rem;font-weight:500;transition:color .2s}
 .nav-links a:hover,.nav-links a.active{color:var(--accent)}
 .hamburger{display:none;background:none;border:none;cursor:pointer}
 .hamburger svg{width:24px;height:24px;stroke:var(--text)}
 
 /* ═══════════ SECTION HEADER ═══════════ */
-.section-header{text-align:center;margin-bottom:64px}
+.section-header{text-align:center;margin-bottom:56px}
 .section-header .tag{
   display:inline-block;font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;
   color:var(--accent);font-weight:600;
   margin-bottom:12px;background:rgba(107,138,255,.1);padding:6px 16px;border-radius:999px;
 }
 .section-header h2{font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:700;color:var(--text-bright);margin-bottom:16px}
-.section-header p{color:var(--text-dim);max-width:640px;margin:0 auto;font-size:1.05rem}
+.section-header p{color:var(--text-dim);max-width:680px;margin:0 auto;font-size:1.02rem}
 
 /* ═══════════ CARDS ═══════════ */
 .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
@@ -195,27 +204,166 @@ nav .container{display:flex;align-items:center;justify-content:space-between;pad
 .card h3{font-size:1.15rem;font-weight:600;color:var(--text-bright);margin-bottom:10px}
 .card p{color:var(--text-dim);font-size:.92rem;line-height:1.65}
 
-/* ═══════════ RESULTS TABLE ═══════════ */
-.table-wrap{overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--border);background:var(--bg-card);box-shadow:var(--shadow-card)}
-table{width:100%;border-collapse:collapse;font-size:.88rem}
-thead{background:rgba(107,138,255,.06)}
-th{padding:14px 18px;text-align:left;font-weight:600;color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);white-space:nowrap}
-td{padding:12px 18px;border-bottom:1px solid rgba(30,41,59,.5);white-space:nowrap}
-tr:last-child td{border-bottom:none}
-tr:hover{background:rgba(107,138,255,.04)}
-.best{color:var(--accent3);font-weight:600}
-.highlight-row{background:rgba(107,138,255,.06) !important}
+/* ═══════════ GRAPH DYNAMICS & PARALLAX STAGE ═══════════ */
+.graph-stage-wrap{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:32px;
+  position:relative;
+  box-shadow:var(--shadow-card);
+  overflow:hidden;
+}
+.graph-stage-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:16px;
+  padding-bottom:24px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:24px;
+}
+.graph-controls{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.graph-btn{
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:7px 14px;
+  border-radius:8px;
+  font-size:.82rem;
+  font-weight:500;
+  cursor:pointer;
+  transition:all .2s;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.graph-btn:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+  background:rgba(107,138,255,.08);
+}
+.graph-btn.active{
+  background:linear-gradient(135deg,rgba(107,138,255,.25),rgba(139,92,246,.25));
+  border-color:var(--accent);
+  color:var(--accent3);
+}
+.graph-viewport{
+  position:relative;
+  width:100%;
+  height:560px;
+  border-radius:var(--radius);
+  background:radial-gradient(ellipse at center, rgba(17,24,39,0.95) 0%, rgba(10,14,26,1) 100%);
+  border:1px solid rgba(255,255,255,.06);
+  overflow:hidden;
+  perspective:1200px;
+  cursor:crosshair;
+}
+#graph-canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+.graph-hud{
+  position:absolute;
+  bottom:20px;
+  left:20px;
+  background:rgba(10,14,26,.85);
+  backdrop-filter:blur(12px);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 18px;
+  font-size:.82rem;
+  color:var(--text-dim);
+  z-index:10;
+  pointer-events:none;
+  max-width:340px;
+}
+.graph-hud .hud-title{
+  font-weight:600;
+  color:var(--text-bright);
+  font-size:.88rem;
+  margin-bottom:6px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.graph-hud .hud-badge{
+  font-size:.7rem;
+  padding:2px 8px;
+  border-radius:4px;
+  background:rgba(107,138,255,.15);
+  color:var(--accent3);
+  font-family:'JetBrains Mono',monospace;
+}
+.graph-legend{
+  position:absolute;
+  top:20px;
+  right:20px;
+  background:rgba(10,14,26,.85);
+  backdrop-filter:blur(12px);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 18px;
+  font-size:.78rem;
+  color:var(--text-dim);
+  z-index:10;
+  pointer-events:none;
+}
+.legend-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:6px;
+}
+.legend-item:last-child{margin-bottom:0}
+.legend-dot{
+  width:8px;height:8px;border-radius:50%;
+}
+.graph-math-bar{
+  margin-top:24px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:16px;
+}
+.math-card{
+  background:rgba(0,0,0,.25);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px 20px;
+  font-size:.84rem;
+}
+.math-card .math-card-label{
+  color:var(--accent);
+  font-weight:600;
+  font-size:.74rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:4px;
+}
+.math-card p{color:var(--text-dim);line-height:1.55}
 
 /* ═══════════ ALGORITHM STEPS ═══════════ */
 .algo-container{position:relative;max-width:900px;margin:0 auto}
 .algo-line{
   position:absolute;left:28px;top:0;bottom:0;width:2px;
-  background:linear-gradient(to bottom,var(--accent),var(--accent2),var(--accent3));
+  background:linear-gradient(to bottom,var(--accent) 0%,var(--accent2) 50%,var(--accent3) 100%);
+  transform-origin:top;
+  will-change:transform;
 }
 .algo-step{
   position:relative;padding-left:72px;margin-bottom:48px;
-  opacity:0;transform:translateY(20px);
-  transition:opacity .6s ease,transform .6s ease;
+  opacity:0;transform:translateY(24px);
+  transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);
 }
 .algo-step.visible{opacity:1;transform:translateY(0)}
 .algo-step:last-child{margin-bottom:0}
@@ -254,6 +402,17 @@ tr:hover{background:rgba(107,138,255,.04)}
   color:var(--accent);font-weight:500;text-transform:uppercase;letter-spacing:.06em;
 }
 
+/* ═══════════ RESULTS TABLE ═══════════ */
+.table-wrap{overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--border);background:var(--bg-card);box-shadow:var(--shadow-card)}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead{background:rgba(107,138,255,.06)}
+th{padding:14px 18px;text-align:left;font-weight:600;color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:12px 18px;border-bottom:1px solid rgba(30,41,59,.5);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover{background:rgba(107,138,255,.04)}
+.best{color:var(--accent3);font-weight:600}
+.highlight-row{background:rgba(107,138,255,.06) !important}
+
 /* ═══════════ THEOREM BOXES ═══════════ */
 .theorem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
 .theorem-box{
@@ -282,9 +441,9 @@ tr:hover{background:rgba(107,138,255,.04)}
 .badge-amber{background:rgba(251,191,36,.12);color:#fbbf24}
 .badge-red{background:rgba(248,113,113,.12);color:#f87171}
 
-/* ═══════════ GLOW DECORATIONS ═══════════ */
-.glow-tl{position:absolute;top:-200px;left:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(107,138,255,.08) 0%,transparent 70%);pointer-events:none}
-.glow-br{position:absolute;bottom:-200px;right:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(139,92,246,.06) 0%,transparent 70%);pointer-events:none}
+/* ═══════════ GLOW DECORATIONS WITH PARALLAX ═══════════ */
+.glow-tl{position:absolute;top:-200px;left:-200px;width:550px;height:550px;background:radial-gradient(circle,rgba(107,138,255,.09) 0%,transparent 70%);pointer-events:none;will-change:transform}
+.glow-br{position:absolute;bottom:-200px;right:-200px;width:550px;height:550px;background:radial-gradient(circle,rgba(139,92,246,.07) 0%,transparent 70%);pointer-events:none;will-change:transform}
 
 /* ═══════════ COLLAPSE ═══════════ */
 details{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px}
@@ -312,6 +471,7 @@ footer .copyright{font-size:.8rem;color:rgba(148,163,184,.5)}
   .algo-step{padding-left:56px}
   .algo-line{left:20px}
   .algo-num{left:0;width:34px;height:34px;font-size:.78rem}
+  .graph-viewport{height:460px}
 }
 </style>
 </head>
@@ -326,6 +486,7 @@ footer .copyright{font-size:.8rem;color:rgba(148,163,184,.5)}
     </a>
     <ul class="nav-links">
       <li><a href="#overview">Overview</a></li>
+      <li><a href="#graph-dynamics">Graph Dynamics</a></li>
       <li><a href="#algorithm">Algorithm</a></li>
       <li><a href="#replication">Replication</a></li>
       <li><a href="#extensions">Extensions</a></li>
@@ -339,11 +500,11 @@ footer .copyright{font-size:.8rem;color:rgba(148,163,184,.5)}
   </div>
 </nav>
 
-<!-- ═══════════ HERO ═══════════ -->
+<!-- ═══════════ HERO WITH PARALLAX ═══════════ -->
 <section class="hero" id="top">
-  <div class="hero-bg"></div>
+  <div class="hero-bg" id="hero-bg"></div>
   <div class="hero-overlay"></div>
-  <div class="hero-content">
+  <div class="hero-content" id="hero-content">
     <img src="docs/images/logo-graph.jpg" alt="Graph Covariance Logo" class="hero-logo">
     <h1>Graph <span>Covariance</span> Forecasting</h1>
     <p class="subtitle">
@@ -361,7 +522,8 @@ footer .copyright{font-size:.8rem;color:rgba(148,163,184,.5)}
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
         View Repository
       </a>
-      <a href="#algorithm" class="btn btn-outline">Explore Algorithm</a>
+      <a href="#graph-dynamics" class="btn btn-outline">Explore Graph Dynamics</a>
+      <a href="previews/graph-explainer.html" class="btn btn-outline">open animated explanation ↗</a>
       <a href="https://doi.org/10.1093/jjfinec/nbae026" class="btn btn-outline">Original Paper</a>
     </div>
   </div>
@@ -373,7 +535,7 @@ footer .copyright{font-size:.8rem;color:rgba(148,163,184,.5)}
 <!-- ═══════════ OVERVIEW ═══════════ -->
 <section id="overview">
   <div class="container" style="position:relative">
-    <div class="glow-tl"></div>
+    <div class="glow-tl" id="glow-1"></div>
     <div class="section-header">
       <div class="tag">Overview</div>
       <h2>The Research Question</h2>
@@ -410,6 +572,105 @@ footer .copyright{font-size:.8rem;color:rgba(148,163,184,.5)}
   </div>
 </section>
 
+<!-- ═══════════ GRAPH DYNAMICS & PARALLAX SECTION ═══════════ -->
+<section id="graph-dynamics">
+  <div class="container" style="position:relative">
+    <div class="glow-br" id="glow-2"></div>
+    <div class="section-header">
+      <div class="tag">Network Mechanism</div>
+      <h2>Interactive Graph Dynamics and Line-Graph Spillovers</h2>
+      <div class="btn-group" style="margin:24px 0"><a class="btn btn-outline" href="previews/graph-explainer.html">watch the graph build, step by step ↗</a></div>
+      <p>
+        Explore how asset shocks propagate across the 27-stock network and how line-graph aggregation contracts pairwise signals.
+        Interact with the canvas: rotate in 3D perspective via mouse movement, select nodes to inspect spillovers, or trigger simulated volatility shocks.
+      </p>
+    </div>
+
+    <div class="graph-stage-wrap">
+      <div class="graph-stage-header">
+        <div class="graph-controls">
+          <button class="graph-btn active" id="btn-mode-stock" onclick="setGraphMode('stock')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M5 7l5 3M19 7l-5 3M5 17l5-3M19 17l-5-3"/></svg>
+            Stock Network $G_S$ ($n=27$)
+          </button>
+          <button class="graph-btn" id="btn-mode-line" onclick="setGraphMode('line')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M12 4v16M7 7l10 10M17 7L7 17"/></svg>
+            Pair Line Graph $G_L$ ($m=351$)
+          </button>
+          <button class="graph-btn" id="btn-mode-contract" onclick="setGraphMode('contraction')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            Contraction $\rho=0.46$
+          </button>
+        </div>
+
+        <div class="graph-controls">
+          <button class="graph-btn" onclick="triggerVolatilityShock()" style="background:rgba(107,138,255,.15);border-color:var(--accent);color:var(--text-bright)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            Simulate Volatility Shock
+          </button>
+          <button class="graph-btn" id="btn-toggle-flow" onclick="toggleParticleFlow()">
+            Spillover Flow: ON
+          </button>
+        </div>
+      </div>
+
+      <!-- 3D Perspective Parallax Stage -->
+      <div class="graph-viewport" id="graph-viewport">
+        <canvas id="graph-canvas"></canvas>
+
+        <!-- Live Telemetry HUD -->
+        <div class="graph-hud" id="graph-hud">
+          <div class="hud-title">
+            <span id="hud-ticker">AAPL</span>
+            <span class="hud-badge" id="hud-sector">Technology</span>
+          </div>
+          <div>Connected Stock Degree: <strong id="hud-degree" style="color:var(--accent3)">5</strong></div>
+          <div>Outgoing Spillover Weight: <strong id="hud-spillover" style="color:var(--text-bright)">1.000</strong></div>
+          <div>Line-Graph Neighbor Pairs: <strong id="hud-pairs" style="color:var(--accent)">50 of 350</strong></div>
+          <div style="margin-top:6px;font-size:.74rem;color:var(--accent3)">Click node to simulate shock &bull; Move mouse for 3D parallax tilt</div>
+        </div>
+
+        <!-- Sector Legend -->
+        <div class="graph-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#22d3ee"></div>Technology (6)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div>Finance (4)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div>Healthcare (4)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f43f5e"></div>Industrials (4)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div>Discretionary (3)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#38bdf8"></div>Staples (3)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#a855f7"></div>Communication (2)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Energy (1)</div>
+        </div>
+      </div>
+
+      <!-- Mathematical Annotations Bar -->
+      <div class="graph-math-bar">
+        <div class="math-card">
+          <div class="math-card-label">Lemma 1 &bull; Line-Graph Operator</div>
+          <p>
+            $$W_L = \frac{B^\top B - 2I_m}{2(n-2)}$$
+            Each pair $(i, j)$ aggregates shocks from $2(n-2) = 50$ neighboring pairs that share either stock endpoint $i$ or $j$.
+          </p>
+        </div>
+        <div class="math-card">
+          <div class="math-card-label">Contraction Rate &bull; $\rho_{27} = 0.46$</div>
+          <p>
+            $$\|W_L^k X - J_m X\|_F \le 0.46^k \|X - J_m X\|_F$$
+            Centered pair contrasts decay by $54\%$ per aggregation pass. After 3 passes, centered noise contracts by $90.3\%$.
+          </p>
+        </div>
+        <div class="math-card">
+          <div class="math-card-label">Computational Efficiency &bull; $O(n^2 d)$</div>
+          <p>
+            $$W_L X = \frac{B^\top (B X) - 2X}{2(n-2)}$$
+            Endpoint incidence product $B^\top(BX)$ avoids materializing the dense $351 \times 351$ pair adjacency matrix.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════ ALGORITHM — step-by-step ═══════════ -->
 <section id="algorithm">
   <div class="container">
@@ -420,7 +681,7 @@ footer .copyright{font-size:.8rem;color:rgba(148,163,184,.5)}
     </div>
 
     <div class="algo-container">
-      <div class="algo-line"></div>
+      <div class="algo-line" id="algo-line"></div>
 
       <!-- Step 1 -->
       <div class="algo-step">
@@ -661,7 +922,7 @@ footer .copyright{font-size:.8rem;color:rgba(148,163,184,.5)}
 <!-- ═══════════ EXTENSIONS ═══════════ -->
 <section id="extensions">
   <div class="container" style="position:relative">
-    <div class="glow-br"></div>
+    <div class="glow-tl" id="glow-3"></div>
     <div class="section-header">
       <div class="tag">Extensions</div>
       <h2>Beyond Replication</h2>
@@ -820,7 +1081,7 @@ footer .copyright{font-size:.8rem;color:rgba(148,163,184,.5)}
 
     <div class="card" style="max-width:700px;margin:0 auto">
       <pre style="background:rgba(0,0,0,.3);padding:20px;border-radius:8px;overflow-x:auto;color:var(--accent3);font-size:.88rem;line-height:1.8"><code>git clone https://github.com/khaamr/graph-covariance-forecasting.git
-cd gnn-volatility-spillovers/covariance_replication
+cd graph-covariance-forecasting/covariance_replication
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
@@ -886,22 +1147,438 @@ python -m unittest discover -s tests -v</code></pre>
   </div>
 </footer>
 
-<!-- ═══════════ SCROLL SPY + STEP ANIMATION ═══════════ -->
+<!-- ═══════════ INTERACTIVE GRAPH ANIMATION & PARALLAX ENGINE ═══════════ -->
 <script>
-// Nav scroll spy
-document.addEventListener('scroll',()=>{
-  const sections=document.querySelectorAll('section[id]');
-  const links=document.querySelectorAll('.nav-links a');
-  let current='';
-  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-120) current=s.id});
-  links.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+current)});
+// 1. DATA: 27 stocks with sectors and positions
+const STOCKS = [
+  // Technology (Cyan: #22d3ee)
+  { ticker: 'AAPL', sector: 'Technology', color: '#22d3ee', x: 0.35, y: 0.28 },
+  { ticker: 'MSFT', sector: 'Technology', color: '#22d3ee', x: 0.42, y: 0.22 },
+  { ticker: 'INTC', sector: 'Technology', color: '#22d3ee', x: 0.30, y: 0.20 },
+  { ticker: 'CSCO', sector: 'Technology', color: '#22d3ee', x: 0.26, y: 0.32 },
+  { ticker: 'CRM',  sector: 'Technology', color: '#22d3ee', x: 0.48, y: 0.28 },
+  { ticker: 'IBM',  sector: 'Technology', color: '#22d3ee', x: 0.32, y: 0.38 },
+
+  // Finance (Blue: #3b82f6)
+  { ticker: 'JPM',  sector: 'Finance', color: '#3b82f6', x: 0.65, y: 0.30 },
+  { ticker: 'GS',   sector: 'Finance', color: '#3b82f6', x: 0.72, y: 0.24 },
+  { ticker: 'AXP',  sector: 'Finance', color: '#3b82f6', x: 0.60, y: 0.38 },
+  { ticker: 'TRV',  sector: 'Finance', color: '#3b82f6', x: 0.75, y: 0.36 },
+
+  // Healthcare (Emerald: #10b981)
+  { ticker: 'JNJ',  sector: 'Healthcare', color: '#10b981', x: 0.22, y: 0.58 },
+  { ticker: 'UNH',  sector: 'Healthcare', color: '#10b981', x: 0.28, y: 0.65 },
+  { ticker: 'MRK',  sector: 'Healthcare', color: '#10b981', x: 0.18, y: 0.68 },
+  { ticker: 'AMGN', sector: 'Healthcare', color: '#10b981', x: 0.32, y: 0.74 },
+
+  // Industrials (Rose: #f43f5e)
+  { ticker: 'BA',   sector: 'Industrials', color: '#f43f5e', x: 0.52, y: 0.52 },
+  { ticker: 'CAT',  sector: 'Industrials', color: '#f43f5e', x: 0.58, y: 0.60 },
+  { ticker: 'HON',  sector: 'Industrials', color: '#f43f5e', x: 0.48, y: 0.64 },
+  { ticker: 'MMM',  sector: 'Industrials', color: '#f43f5e', x: 0.62, y: 0.52 },
+
+  // Discretionary (Violet: #8b5cf6)
+  { ticker: 'HD',   sector: 'Discretionary', color: '#8b5cf6', x: 0.70, y: 0.72 },
+  { ticker: 'MCD',  sector: 'Discretionary', color: '#8b5cf6', x: 0.78, y: 0.65 },
+  { ticker: 'NKE',  sector: 'Discretionary', color: '#8b5cf6', x: 0.72, y: 0.82 },
+
+  // Staples (Sky: #38bdf8)
+  { ticker: 'PG',   sector: 'Staples', color: '#38bdf8', x: 0.38, y: 0.82 },
+  { ticker: 'KO',   sector: 'Staples', color: '#38bdf8', x: 0.45, y: 0.88 },
+  { ticker: 'WMT',  sector: 'Staples', color: '#38bdf8', x: 0.32, y: 0.88 },
+
+  // Communication (Purple: #a855f7)
+  { ticker: 'DIS',  sector: 'Communication', color: '#a855f7', x: 0.40, y: 0.45 },
+  { ticker: 'VZ',   sector: 'Communication', color: '#a855f7', x: 0.34, y: 0.52 },
+
+  // Energy (Amber: #f59e0b)
+  { ticker: 'CVX',  sector: 'Energy', color: '#f59e0b', x: 0.82, y: 0.48 }
+];
+
+// Edges connecting stocks (intra-sector + inter-sector GLASSO edges)
+const EDGES = [
+  // Tech intra
+  [0,1],[0,2],[0,3],[0,4],[0,5],[1,2],[1,4],[2,3],[3,5],
+  // Finance intra
+  [6,7],[6,8],[6,9],[7,8],[8,9],
+  // Health intra
+  [10,11],[10,12],[10,13],[11,12],[11,13],
+  // Industrials intra
+  [14,15],[14,16],[14,17],[15,16],[16,17],
+  // Discretionary intra
+  [18,19],[18,20],[19,20],
+  // Staples intra
+  [21,22],[21,23],[22,23],
+  // Communication intra
+  [24,25],
+  // Inter-sector GLASSO spillovers
+  [0,6],[1,7],[0,24],[6,14],[14,26],[15,26],[10,21],[18,21],[4,6],[0,14],[6,18],[10,24]
+];
+
+// Graph State
+let currentGraphMode = 'stock'; // 'stock' | 'line' | 'contraction'
+let particleFlowEnabled = true;
+let selectedNodeIndex = 0;
+let shockWaves = [];
+let particles = [];
+
+const canvas = document.getElementById('graph-canvas');
+const ctx = canvas.getContext('2d');
+const viewport = document.getElementById('graph-viewport');
+
+// Initialize particles along edges
+function initParticles() {
+  particles = [];
+  EDGES.forEach((edge, i) => {
+    // 2 particles per edge travelling in opposing directions
+    particles.push({ edgeIdx: i, t: Math.random(), speed: 0.003 + Math.random() * 0.004, dir: 1 });
+    particles.push({ edgeIdx: i, t: Math.random(), speed: 0.003 + Math.random() * 0.004, dir: -1 });
+  });
+}
+initParticles();
+
+// Canvas Sizing with Retina support
+let width = 0, height = 0, dpr = 1;
+function resizeCanvas() {
+  dpr = window.devicePixelRatio || 1;
+  const rect = viewport.getBoundingClientRect();
+  width = rect.width;
+  height = rect.height;
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+  ctx.scale(dpr, dpr);
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// Mode Switcher
+function setGraphMode(mode) {
+  currentGraphMode = mode;
+  document.querySelectorAll('.graph-controls .graph-btn').forEach(btn => btn.classList.remove('active'));
+  const btn = document.getElementById(`btn-mode-${mode === 'contraction' ? 'contract' : mode}`);
+  if (btn) btn.classList.add('active');
+
+  // Trigger brief shock animation on mode transition
+  triggerVolatilityShock(selectedNodeIndex);
+}
+
+function toggleParticleFlow() {
+  particleFlowEnabled = !particleFlowEnabled;
+  const btn = document.getElementById('btn-toggle-flow');
+  btn.textContent = `Spillover Flow: ${particleFlowEnabled ? 'ON' : 'OFF'}`;
+  btn.classList.toggle('active', particleFlowEnabled);
+}
+
+function triggerVolatilityShock(originIdx) {
+  const idx = typeof originIdx === 'number' ? originIdx : selectedNodeIndex;
+  const origin = STOCKS[idx];
+  shockWaves.push({
+    x: origin.x * width,
+    y: origin.y * height,
+    radius: 0,
+    maxRadius: Math.min(width, height) * 0.7,
+    alpha: 1.0,
+    originIdx: idx,
+    hop: 0
+  });
+
+  // Highlight connected neighbors with amplitude decay
+  STOCKS.forEach((s, i) => {
+    if (i === idx) {
+      s.pulse = 1.0;
+    } else {
+      const isNeighbor = EDGES.some(e => (e[0] === idx && e[1] === i) || (e[1] === idx && e[0] === i));
+      if (isNeighbor) {
+        setTimeout(() => { s.pulse = 0.46; }, 180);
+      }
+    }
+  });
+}
+
+// 2. PARALLAX 3D MOUSE TILT ENGINE
+let tiltX = 0, tiltY = 0, targetTiltX = 0, targetTiltY = 0;
+let mouseX = 0, mouseY = 0;
+
+viewport.addEventListener('mousemove', (e) => {
+  const rect = viewport.getBoundingClientRect();
+  mouseX = e.clientX - rect.left;
+  mouseY = e.clientY - rect.top;
+
+  // Calculate normalized tilt (-1 to 1)
+  const normX = (mouseX / width - 0.5) * 2;
+  const normY = (mouseY / height - 0.5) * 2;
+  targetTiltX = -normY * 12; // rotateX in degrees
+  targetTiltY = normX * 14;  // rotateY in degrees
+
+  // Hover detection for nodes
+  let found = -1;
+  STOCKS.forEach((s, idx) => {
+    const sx = s.x * width;
+    const sy = s.y * height;
+    const dist = Math.hypot(mouseX - sx, mouseY - sy);
+    if (dist < 22) found = idx;
+  });
+
+  if (found !== -1 && found !== selectedNodeIndex) {
+    selectedNodeIndex = found;
+    updateHUD(found);
+  }
 });
 
-// Algorithm steps reveal on scroll
-const observer=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}});
-},{threshold:0.15});
-document.querySelectorAll('.algo-step').forEach(s=>observer.observe(s));
+viewport.addEventListener('mouseleave', () => {
+  targetTiltX = 0;
+  targetTiltY = 0;
+});
+
+viewport.addEventListener('click', (e) => {
+  const rect = viewport.getBoundingClientRect();
+  const cx = e.clientX - rect.left;
+  const cy = e.clientY - rect.top;
+  STOCKS.forEach((s, idx) => {
+    const sx = s.x * width;
+    const sy = s.y * height;
+    if (Math.hypot(cx - sx, cy - sy) < 25) {
+      selectedNodeIndex = idx;
+      updateHUD(idx);
+      triggerVolatilityShock(idx);
+    }
+  });
+});
+
+function updateHUD(idx) {
+  const s = STOCKS[idx];
+  document.getElementById('hud-ticker').textContent = s.ticker;
+  document.getElementById('hud-ticker').style.color = s.color;
+  document.getElementById('hud-sector').textContent = s.sector;
+
+  // Calculate degrees
+  const deg = EDGES.filter(e => e[0] === idx || e[1] === idx).length;
+  document.getElementById('hud-degree').textContent = deg;
+  document.getElementById('hud-spillover').textContent = (1.0).toFixed(3);
+  document.getElementById('hud-pairs').textContent = `${2 * (27 - 2)} of 350`;
+}
+
+// 3. MAIN ANIMATION LOOP (60 FPS)
+let time = 0;
+function animateGraph() {
+  time += 0.016;
+
+  // Smooth tilt interpolation (LERP)
+  tiltX += (targetTiltX - tiltX) * 0.08;
+  tiltY += (targetTiltY - tiltY) * 0.08;
+  canvas.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+
+  ctx.clearRect(0, 0, width, height);
+
+  // Background grid parallax
+  drawBackgroundParallaxGrid();
+
+  // Draw Shock Waves
+  for (let i = shockWaves.length - 1; i >= 0; i--) {
+    const sw = shockWaves[i];
+    sw.radius += 3.5;
+    sw.alpha = Math.max(0, 1 - sw.radius / sw.maxRadius);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(107, 138, 255, ${sw.alpha * 0.6})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Secondary contraction ring
+    if (sw.radius > 40) {
+      ctx.beginPath();
+      ctx.arc(sw.x, sw.y, sw.radius * 0.46, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(34, 211, 238, ${sw.alpha * 0.4})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    if (sw.radius >= sw.maxRadius) {
+      shockWaves.splice(i, 1);
+    }
+  }
+
+  // Draw Edges
+  EDGES.forEach((e) => {
+    const s1 = STOCKS[e[0]];
+    const s2 = STOCKS[e[1]];
+    const x1 = s1.x * width;
+    const y1 = s1.y * height;
+    const x2 = s2.x * width;
+    const y2 = s2.y * height;
+
+    const isConnectedToSelected = (e[0] === selectedNodeIndex || e[1] === selectedNodeIndex);
+
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+
+    if (currentGraphMode === 'line') {
+      // Line graph mode: emphasize pair edges
+      ctx.strokeStyle = isConnectedToSelected ? 'rgba(34, 211, 238, 0.7)' : 'rgba(99, 130, 255, 0.15)';
+      ctx.lineWidth = isConnectedToSelected ? 2.5 : 1;
+    } else if (currentGraphMode === 'contraction') {
+      // Contraction mode: edge width indicates 0.46 contraction
+      ctx.strokeStyle = isConnectedToSelected ? 'rgba(139, 92, 246, 0.8)' : 'rgba(107, 138, 255, 0.12)';
+      ctx.lineWidth = isConnectedToSelected ? 2 : 0.8;
+    } else {
+      // Stock mode
+      ctx.strokeStyle = isConnectedToSelected ? 'rgba(107, 138, 255, 0.6)' : 'rgba(30, 41, 59, 0.65)';
+      ctx.lineWidth = isConnectedToSelected ? 2 : 1;
+    }
+    ctx.stroke();
+  });
+
+  // Draw Animated Spillover Particles along Edges
+  if (particleFlowEnabled) {
+    particles.forEach(p => {
+      p.t += p.speed * p.dir;
+      if (p.t > 1) p.t = 0;
+      if (p.t < 0) p.t = 1;
+
+      const edge = EDGES[p.edgeIdx];
+      const s1 = STOCKS[edge[0]];
+      const s2 = STOCKS[edge[1]];
+      const px = (s1.x + (s2.x - s1.x) * p.t) * width;
+      const py = (s1.y + (s2.y - s1.y) * p.t) * height;
+
+      const isConnected = (edge[0] === selectedNodeIndex || edge[1] === selectedNodeIndex);
+
+      ctx.beginPath();
+      ctx.arc(px, py, isConnected ? 2.5 : 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = isConnected ? '#22d3ee' : 'rgba(107, 138, 255, 0.6)';
+      ctx.shadowColor = isConnected ? '#22d3ee' : '#6b8aff';
+      ctx.shadowBlur = isConnected ? 8 : 4;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    });
+  }
+
+  // Draw Nodes
+  STOCKS.forEach((s, idx) => {
+    // Subtle organic floating movement
+    const floatOffsetX = Math.sin(time + idx * 0.7) * 2;
+    const floatOffsetY = Math.cos(time + idx * 0.5) * 2;
+    const sx = s.x * width + floatOffsetX;
+    const sy = s.y * height + floatOffsetY;
+
+    // Decay pulse
+    if (!s.pulse) s.pulse = 0;
+    s.pulse *= 0.95;
+
+    const isSelected = (idx === selectedNodeIndex);
+    const baseRadius = isSelected ? 12 : 8;
+    const currentRadius = baseRadius + s.pulse * 8;
+
+    // Outer glow ring
+    ctx.beginPath();
+    ctx.arc(sx, sy, currentRadius + 4, 0, Math.PI * 2);
+    ctx.fillStyle = isSelected ? 'rgba(107, 138, 255, 0.25)' : 'rgba(255, 255, 255, 0.03)';
+    ctx.fill();
+
+    // Node body
+    ctx.beginPath();
+    ctx.arc(sx, sy, currentRadius, 0, Math.PI * 2);
+    ctx.fillStyle = s.color;
+    ctx.shadowColor = s.color;
+    ctx.shadowBlur = isSelected ? 18 : (s.pulse > 0.1 ? 14 : 6);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Ticker text
+    ctx.font = isSelected ? 'bold 11px Inter, sans-serif' : '10px Inter, sans-serif';
+    ctx.fillStyle = isSelected ? '#ffffff' : 'rgba(248, 250, 252, 0.85)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(s.ticker, sx, sy - currentRadius - 10);
+  });
+
+  requestAnimationFrame(animateGraph);
+}
+
+function drawBackgroundParallaxGrid() {
+  const gridSize = 40;
+  const offX = (tiltY * 1.5) % gridSize;
+  const offY = (-tiltX * 1.5) % gridSize;
+
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
+  ctx.lineWidth = 1;
+
+  for (let x = offX; x < width; x += gridSize) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, height);
+    ctx.stroke();
+  }
+  for (let y = offY; y < height; y += gridSize) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(width, y);
+    ctx.stroke();
+  }
+}
+
+requestAnimationFrame(animateGraph);
+
+// 4. SCROLL PARALLAX ENGINE (HERO, GLOW ORBS & PIPELINE PROGRESS)
+const heroBg = document.getElementById('hero-bg');
+const heroContent = document.getElementById('hero-content');
+const glow1 = document.getElementById('glow-1');
+const glow2 = document.getElementById('glow-2');
+const glow3 = document.getElementById('glow-3');
+const algoLine = document.getElementById('algo-line');
+
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+
+  // Hero Parallax (background translates slower, content fades)
+  if (scrollY < window.innerHeight * 1.2) {
+    heroBg.style.transform = `translate3d(0, ${scrollY * 0.35}px, 0)`;
+    heroContent.style.transform = `translate3d(0, ${scrollY * 0.15}px, 0)`;
+    heroContent.style.opacity = `${Math.max(0, 1 - scrollY / 700)}`;
+  }
+
+  // Ambient Glow Orb Parallax
+  if (glow1) glow1.style.transform = `translate3d(0, ${scrollY * 0.08}px, 0)`;
+  if (glow2) glow2.style.transform = `translate3d(0, ${-scrollY * 0.06}px, 0)`;
+  if (glow3) glow3.style.transform = `translate3d(0, ${scrollY * 0.05}px, 0)`;
+
+  // Algorithm Progress Line Parallax
+  const algoSection = document.getElementById('algorithm');
+  if (algoSection && algoLine) {
+    const rect = algoSection.getBoundingClientRect();
+    const windowH = window.innerHeight;
+    if (rect.top < windowH && rect.bottom > 0) {
+      const progress = Math.min(1, Math.max(0, (windowH - rect.top) / (rect.height + windowH * 0.5)));
+      algoLine.style.transform = `scaleY(${progress})`;
+    }
+  }
+
+  // Nav Scroll Spy
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav-links a');
+  let current = '';
+  sections.forEach(s => {
+    if (scrollY >= s.offsetTop - 140) current = s.id;
+  });
+  links.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}, { passive: true });
+
+// 5. REVEAL OBSERVER FOR ALGORITHM STEPS
+const stepObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      stepObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.algo-step').forEach(s => stepObserver.observe(s));
 </script>
 </body>
 </html>
