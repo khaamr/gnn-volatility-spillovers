@@ -14,6 +14,8 @@ we forecast how 27 stocks move together and check whether better covariance fore
 
 ## research dashboards
 
+[download the offline dashboard (ZIP)](https://github.com/khaamr/graph-covariance-forecasting/archive/refs/heads/main.zip). unzip the project and open `research_dashboard.html` in your browser. all nine charts work offline.
+
 | dashboard | what it shows |
 | --- | --- |
 | [replication](https://khaamr.github.io/graph-covariance-forecasting/research_dashboard.html#section-replication-01) | forecast losses by horizon, portfolio risk and turnover |
@@ -34,7 +36,7 @@ we forecast how 27 stocks move together and check whether better covariance fore
 | [adaptive shapes](covariance_replication/Extended_Covariance.ipynb) | covariance shape mixtures with delayed feedback |
 | [spectral extension](covariance_replication/Spectral_Covariance.ipynb) | geometric pooling, eigenvalue cleaning and portfolio evaluation |
 
-[all nine dashboard figures](https://khaamr.github.io/graph-covariance-forecasting/research_dashboard.html) · [offline dashboard](research_dashboard.html) · [figure sources](figures/README.md) · [mathematical notes](covariance_replication/docs/theory.md)
+[all nine dashboard figures](https://khaamr.github.io/graph-covariance-forecasting/research_dashboard.html) · [figure sources](figures/README.md) · [mathematical notes](covariance_replication/docs/theory.md)
 
 ## reproduce
 
